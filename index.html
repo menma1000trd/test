@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>すごい1ページ</title>
+
+    <style>
+        /* ページ全体の基本設定 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #222; /* 暗めの背景色 */
+            color: #eee; /* 明るめの文字色 */
+            height: 100vh; /* 画面全体の高さを確保 */
+            margin: 0;
+            display: flex; /* 中央揃えのため */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden; /* はみ出た要素を隠す */
+            cursor: pointer; /* マウスカーソルを指マークに */
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        /* クリック時に表示される文字のスタイル */
+        .click-effect {
+            position: absolute; /* 画面上の好きな位置に配置するため */
+            font-size: 1.5rem;
+            font-weight: bold;
+            pointer-events: none; /* テキスト自体がクリックされるのを防ぐ */
+            
+            /* アニメーションの指定 */
+            /* 'float-up' という名前のアニメーションを 1.5秒間 実行する */
+            animation: float-up 1.5s ease-out forwards;
+        }
+
+        /* 'float-up' アニメーションの定義 */
+        @keyframes float-up {
+            /* 0% (開始時) */
+            0% {
+                opacity: 1; /* 透明度1 (見える) */
+                transform: translateY(0); /* Y軸の移動なし */
+            }
+            /* 100% (終了時) */
+            100% {
+                opacity: 0; /* 透明度0 (消える) */
+                transform: translateY(-80px); /* 80px上に移動する */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>どこでもクリックしてみてください！</h1>
+
+
+    <script>
+        // 表示する文字のリスト
+        const texts = ['Wow!', 'すごい!', 'Hello!', '✨', '🚀', '🎉'];
+        
+        // 表示する色のリスト
+        const colors = ['#ff6b81', '#ffc048', '#48dbfb', '#1dd1a1', '#feca57', '#5f27cd'];
+
+        // ページ（document）のどこかがクリックされたら、...
+        document.addEventListener('click', function(e) {
+            
+            // 1. 新しい <span> 要素（文字を入れるタグ）を作る
+            const effect = document.createElement('span');
+            
+            // 2. 'click-effect' というCSSクラスを追加する（アニメーションが適用される）
+            effect.className = 'click-effect';
+            
+            // 3. ランダムなテキストと色を選ぶ
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // 4. 選んだテキストと色をセットする
+            effect.textContent = randomText;
+            effect.style.color = randomColor;
+
+            // 5. クリックされた位置 (e.clientX, e.clientY) に配置する
+            //    (少しずらすとカーソルの真下にならず見やすい)
+            effect.style.left = (e.clientX - 15) + 'px';
+            effect.style.top = (e.clientY - 15) + 'px';
+            
+            // 6. ページ (body) に追加する
+            document.body.appendChild(effect);
+            
+            // 7. アニメーションが終わったら (1.5秒後) 要素を削除する
+            //    (これをしないと、消えた要素がページに残り続けて重くなる)
+            setTimeout(() => {
+                effect.remove();
+            }, 1500);
+        });
+    </script>
+
+</body>
+</html>
