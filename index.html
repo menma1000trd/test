@@ -1,103 +1,189 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>すごい1ページ</title>
-
-    <style>
-        /* ページ全体の基本設定 */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #222; /* 暗めの背景色 */
-            color: #eee; /* 明るめの文字色 */
-            height: 100vh; /* 画面全体の高さを確保 */
-            margin: 0;
-            display: flex; /* 中央揃えのため */
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            overflow: hidden; /* はみ出た要素を隠す */
-            cursor: pointer; /* マウスカーソルを指マークに */
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            color: white;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        }
-
-        /* クリック時に表示される文字のスタイル */
-        .click-effect {
-            position: absolute; /* 画面上の好きな位置に配置するため */
-            font-size: 1.5rem;
-            font-weight: bold;
-            pointer-events: none; /* テキスト自体がクリックされるのを防ぐ */
-            
-            /* アニメーションの指定 */
-            /* 'float-up' という名前のアニメーションを 1.5秒間 実行する */
-            animation: float-up 1.5s ease-out forwards;
-        }
-
-        /* 'float-up' アニメーションの定義 */
-        @keyframes float-up {
-            /* 0% (開始時) */
-            0% {
-                opacity: 1; /* 透明度1 (見える) */
-                transform: translateY(0); /* Y軸の移動なし */
-            }
-            /* 100% (終了時) */
-            100% {
-                opacity: 0; /* 透明度0 (消える) */
-                transform: translateY(-80px); /* 80px上に移動する */
-            }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>飛騨高山 旅のしおり（1ファイルSPA）</title>
+  <style>
+    :root { --bg:#0f172a; --fg:#e2e8f0; --muted:#94a3b8; --brand:#22c55e; --card:#111827; --link:#38bdf8; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", sans-serif; background:var(--bg); color:var(--fg);}
+    header { position:sticky; top:0; backdrop-filter: blur(10px); background:rgba(15,23,42,.85); border-bottom:1px solid #1f2937; z-index:10;}
+    .wrap { max-width: 980px; margin:0 auto; padding: 16px; }
+    nav { display:flex; gap:8px; }
+    .tab { padding:10px 14px; border-radius:10px; border:1px solid #1f2937; color:var(--fg); background: #0b1220; cursor:pointer; }
+    .tab.active { background: #12233d; border-color:#24446f; box-shadow: inset 0 0 0 1px #24446f; }
+    main { padding: 8px 16px 80px; }
+    .page { display:none; opacity:0; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease; }
+    .page.active { display:block; opacity:1; transform: translateY(0); }
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    h2 { font-size: 18px; margin: 24px 0 8px; }
+    p { color: var(--muted); line-height: 1.7; }
+    .cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:12px; }
+    .card { background: var(--card); border:1px solid #1f2937; border-radius:12px; padding:14px; }
+    .meta { font-size: 12px; color: var(--muted); }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .btn { display:inline-block; margin-top: 8px; padding:8px 10px; border:1px solid #1f2937; border-radius:8px; color:#e5f5ff; background:#0b2030; }
+    .kicker { color:#9be7ff; font-size:12px; letter-spacing:.06em; text-transform: uppercase; }
+    .grid { display:grid; gap:10px; }
+    .row { display:grid; grid-template-columns: 96px 1fr; gap:10px; align-items:flex-start; padding:10px; border:1px solid #1f2937; border-radius:10px; background:#0b1220; }
+    .time { color:#bef264; font-variant-numeric: tabular-nums; }
+    footer { position:fixed; bottom:0; left:0; right:0; background:rgba(15,23,42,.96); border-top:1px solid #1f2937;}
+    .footer-wrap { max-width:980px; margin:0 auto; padding:8px 16px; display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .pill { padding:6px 10px; border-radius:999px; border:1px solid #1f2937; color:#cbd5e1; background:#0b1220; }
+  </style>
 </head>
 <body>
+  <header>
+    <div class="wrap">
+      <h1>飛騨高山 旅のしおり</h1>
+      <nav>
+        <a class="tab" href="#schedule">スケジュール</a>
+        <a class="tab" href="#spots">観光名所</a>
+        <a class="tab" href="#notes">メモ</a>
+      </nav>
+    </div>
+  </header>
 
-    <h1>どこでもクリックしてみてください！</h1>
+  <main class="wrap">
+    <!-- Schedule -->
+    <section id="schedule" class="page">
+      <p class="kicker">Plan</p>
+      <h2>モデル行程（2日）</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Day 1｜高山市内</h3>
+          <div class="row">
+            <div class="time">09:00</div>
+            <div>古い町並（さんまち）そぞろ歩き → カフェ休憩（食べ歩き・写真）<br>
+              <a class="btn" href="https://www.japan-guide.com/e/e5900.html" target="_blank" rel="noopener">スポット情報</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="time">11:00</div>
+            <div>高山陣屋（史跡・建築）見学<br>
+              <a class="btn" href="https://jinya.gifu.jp/en/" target="_blank" rel="noopener">公式サイト</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="time">13:00</div>
+            <div>飛騨の里（合掌造り・民俗展示）<br>
+              <a class="btn" href="https://www.japan-guide.com/e/e5901.html" target="_blank" rel="noopener">解説ページ</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="time">夕方</div>
+            <div>温泉・宿チェックイン、夜さんぽ（陣屋前・中橋ライトアップ時期は写真）<br>
+              <a class="btn" href="https://www.hidatakayama.or.jp/index.html" target="_blank" rel="noopener">観光公式</a>
+            </div>
+          </div>
+        </div>
 
+        <div class="card">
+          <h3>Day 2｜周辺エリア</h3>
+          <div class="row">
+            <div class="time">08:30</div>
+            <div>白川郷へ移動 → 合掌造り集落散策（展望台は天候次第）<br>
+              <a class="btn" href="https://shirakawa-go.gr.jp/en/" target="_blank" rel="noopener">白川郷観光協会</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="time">13:30</div>
+            <div>飛騨大鍾乳洞（気温低め・歩きやすい靴）<br>
+              <a class="btn" href="https://www.syonyudo.com/en/" target="_blank" rel="noopener">公式サイト</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="time">夕方</div>
+            <div>高山へ戻っておみやげ・早めの夕食、解散</div>
+          </div>
+        </div>
+      </div>
+      <p class="meta">移動は天候・路面状況に合わせて調整し、各施設の開館時間は事前に公式で確認してください。</p>
+    </section>
 
-    <script>
-        // 表示する文字のリスト
-        const texts = ['Wow!', 'すごい!', 'Hello!', '✨', '🚀', '🎉'];
-        
-        // 表示する色のリスト
-        const colors = ['#ff6b81', '#ffc048', '#48dbfb', '#1dd1a1', '#feca57', '#5f27cd'];
+    <!-- Spots -->
+    <section id="spots" class="page">
+      <p class="kicker">Spots</p>
+      <h2>観光名所リンク集</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>飛騨高山 公式観光</h3>
+          <p>イベント・モデルコース・グルメなど総合情報。</p>
+          <a class="btn" href="https://www.hidatakayama.or.jp/index.html" target="_blank" rel="noopener">公式へ</a>
+        </article>
+        <article class="card">
+          <h3>古い町並（さんまち）</h3>
+          <p>江戸風情が残る高山の中心的散策エリア。</p>
+          <a class="btn" href="https://www.japan-guide.com/e/e5900.html" target="_blank" rel="noopener">解説へ</a>
+        </article>
+        <article class="card">
+          <h3>高山陣屋</h3>
+          <p>国指定史跡の代官所・御役所建築。</p>
+          <a class="btn" href="https://jinya.gifu.jp/en/" target="_blank" rel="noopener">公式へ</a>
+        </article>
+        <article class="card">
+          <h3>飛騨の里（Hida Folk Village）</h3>
+          <p>合掌造り移築の野外博物館。</p>
+          <a class="btn" href="https://www.japan-guide.com/e/e5901.html" target="_blank" rel="noopener">解説へ</a>
+        </article>
+        <article class="card">
+          <h3>白川郷（世界遺産）</h3>
+          <p>合掌造りの集落景観。</p>
+          <a class="btn" href="https://shirakawa-go.gr.jp/en/" target="_blank" rel="noopener">観光協会</a>
+        </article>
+        <article class="card">
+          <h3>飛騨大鍾乳洞</h3>
+          <p>標高約900mの観光鍾乳洞。</p>
+          <a class="btn" href="https://www.syonyudo.com/en/" target="_blank" rel="noopener">公式へ</a>
+        </article>
+        <article class="card">
+          <h3>観光案内所</h3>
+          <p>最新パンフや相談窓口。</p>
+          <a class="btn" href="http://www.hida.jp/english/traveltips/practicalguide/4000111.html" target="_blank" rel="noopener">案内所</a>
+        </article>
+      </div>
+    </section>
 
-        // ページ（document）のどこかがクリックされたら、...
-        document.addEventListener('click', function(e) {
-            
-            // 1. 新しい <span> 要素（文字を入れるタグ）を作る
-            const effect = document.createElement('span');
-            
-            // 2. 'click-effect' というCSSクラスを追加する（アニメーションが適用される）
-            effect.className = 'click-effect';
-            
-            // 3. ランダムなテキストと色を選ぶ
-            const randomText = texts[Math.floor(Math.random() * texts.length)];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            
-            // 4. 選んだテキストと色をセットする
-            effect.textContent = randomText;
-            effect.style.color = randomColor;
+    <!-- Notes -->
+    <section id="notes" class="page">
+      <p class="kicker">Notes</p>
+      <h2>持ち物・メモ</h2>
+      <ul>
+        <li>防寒・雨具（山間部は気温差大）</li>
+        <li>徒歩用シューズ（石畳・洞内は滑りやすい）</li>
+        <li>現金少額（露店・小規模店対策）</li>
+      </ul>
+      <p class="meta">このページは1ファイルで動作し、オフラインでも最低限の表示が可能です（外部リンクは通信が必要）。</p>
+    </section>
+  </main>
 
-            // 5. クリックされた位置 (e.clientX, e.clientY) に配置する
-            //    (少しずらすとカーソルの真下にならず見やすい)
-            effect.style.left = (e.clientX - 15) + 'px';
-            effect.style.top = (e.clientY - 15) + 'px';
-            
-            // 6. ページ (body) に追加する
-            document.body.appendChild(effect);
-            
-            // 7. アニメーションが終わったら (1.5秒後) 要素を削除する
-            //    (これをしないと、消えた要素がページに残り続けて重くなる)
-            setTimeout(() => {
-                effect.remove();
-            }, 1500);
-        });
-    </script>
+  <footer>
+    <div class="footer-wrap">
+      <span class="pill">飛騨高山 旅のしおり</span>
+      <span class="pill"><a href="#schedule">Schedule</a>｜<a href="#spots">Spots</a>｜<a href="#notes">Notes</a></span>
+    </div>
+  </footer>
 
+  <script>
+    const pages = ["schedule", "spots", "notes"];
+    const setActive = (id) => {
+      pages.forEach(p => {
+        const el = document.getElementById(p);
+        const tab = document.querySelector(`a.tab[href="#${p}"]`);
+        if (!el || !tab) return;
+        const on = (p === id);
+        el.classList.toggle("active", on);
+        tab.classList.toggle("active", on);
+      });
+    };
+    const route = () => {
+      const id = (location.hash || "#schedule").slice(1);
+      setActive(pages.includes(id) ? id : "schedule");
+    };
+    window.addEventListener("hashchange", route);
+    route();
+  </script>
 </body>
 </html>
