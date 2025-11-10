@@ -1,605 +1,234 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>飛騨高山 旅のしおり（1ファイルSPA）</title>
-  <style>
-    /* Design Tokens */
-    :root {
-      /* Color tokens - semantic naming */
-      --color-bg-primary: #0f172a;
-      --color-bg-secondary: #0b1220;
-      --color-bg-elevated: #111827;
-      --color-bg-overlay: rgba(15,23,42,.85);
-      --color-text-primary: #e2e8f0;
-      --color-text-secondary: #94a3b8;
-      --color-text-accent: #bef264;
-      --color-brand: #22c55e;
-      --color-link: #38bdf8;
-      --color-link-hover: #7dd3fc;
-      --color-border-default: #1f2937;
-      --color-border-selected: #24446f;
-      --color-surface-sunken: #0b1220;
-      --color-surface-raised: #12233d;
-      /* Status colors */
-      --color-status-info: #38bdf8;
-      --color-status-success: #22c55e;
-      --color-status-warning: #fbbf24;
-      --color-status-caution: #fb923c;
-      /* Spacing tokens */
-      --space-xs: 4px;
-      --space-sm: 8px;
-      --space-md: 12px;
-      --space-lg: 16px;
-      --space-xl: 24px;
-      /* Radius */
-      --radius-sm: 8px;
-      --radius-md: 10px;
-      --radius-lg: 12px;
-      --radius-full: 999px;
-      /* Focus */
-      --focus-ring: 0 0 0 2px var(--color-status-info);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私の旅のしおり</title>
 
-    * { box-sizing: border-box; margin: 0; }
-    
-    body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", sans-serif;
-      background: var(--color-bg-primary);
-      color: var(--color-text-primary);
-      line-height: 1.5;
-    }
+    <style>
+        /* ======== 全体の基本設定 ======== */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* 背景色 */
+            color: #333;
+        }
 
-    /* Header - Navigation component */
-    header {
-      position: sticky;
-      top: 0;
-      backdrop-filter: blur(10px);
-      background: var(--color-bg-overlay);
-      border-bottom: 1px solid var(--color-border-default);
-      z-index: 10;
-    }
+        /* メインコンテンツ領域（フッター分だけ下に余白） */
+        main {
+            padding-bottom: 80px; 
+        }
 
-    .wrap {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: var(--space-lg);
-    }
+        /* ======== ヘッダー ======== */
+        header {
+            background-color: #E6F2F2; /* 画像のミントグリーン風 */
+            padding: 20px 15px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: #004D40; /* 濃い緑 */
+        }
 
-    h1 {
-      font-size: 20px;
-      margin: 0 0 var(--space-sm);
-      font-weight: 600;
-    }
+        /* ======== コンテンツのセクション ======== */
+        section {
+            display: none; /* JavaScriptで切り替えるため、最初は非表示 */
+            padding: 15px;
+        }
+        /* 最初に表示するセクション */
+        section.active {
+            display: block;
+        }
 
-    /* Tab navigation - Tabs component inspired */
-    nav {
-      display: flex;
-      gap: var(--space-sm);
-      role: tablist;
-    }
+        /* ======== カード型レイアウト (共通) ======== */
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            overflow: hidden; /* 画像の角を丸めるため */
+        }
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover; /* 画像の比率を保ったままトリミング */
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .card-content h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #004D40;
+        }
+        .card-content p, .card-content ul {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
 
-    .tab {
-      padding: 10px 14px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--color-border-default);
-      color: var(--color-text-primary);
-      background: var(--color-surface-sunken);
-      cursor: pointer;
-      transition: all 0.15s ease;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-    }
+        /* 旅程リスト (画像1枚目下部) */
+        .itinerary-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .itinerary-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+        /* リストのアイコン（簡易的） */
+        .itinerary-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #00796B; /* 緑 */
+            font-weight: bold;
+        }
 
-    .tab:hover {
-      background: var(--color-surface-raised);
-      border-color: var(--color-border-selected);
-      text-decoration: none;
-    }
+        /* ======== フッターナビゲーション (画像共通) ======== */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+            display: flex; /* 横並び */
+            justify-content: space-around; /* 均等配置 */
+            padding: 10px 0;
+        }
+        .nav-button {
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            color: #888;
+            cursor: pointer;
+            padding: 5px;
+        }
+        /* JavaScriptで切り替えるアクティブなボタン */
+        .nav-button.active {
+            color: #00796B; /* アクティブな色 */
+            font-weight: bold;
+        }
+        .nav-button div {
+            font-size: 1.2rem; /* アイコンの代わりの絵文字 */
+        }
 
-    .tab:focus-visible {
-      outline: none;
-      box-shadow: var(--focus-ring);
-    }
-
-    .tab.active {
-      background: var(--color-surface-raised);
-      border-color: var(--color-border-selected);
-      box-shadow: inset 0 0 0 1px var(--color-border-selected);
-    }
-
-    /* Main content */
-    main {
-      padding: var(--space-sm) var(--space-lg) 80px;
-    }
-
-    .page {
-      display: none;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-
-    .page.active {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Typography */
-    h2 {
-      font-size: 18px;
-      margin: var(--space-xl) 0 var(--space-sm);
-      font-weight: 600;
-    }
-
-    h3 {
-      font-size: 16px;
-      margin: 0 0 var(--space-sm);
-      font-weight: 600;
-    }
-
-    p {
-      color: var(--color-text-secondary);
-      line-height: 1.7;
-      margin: var(--space-sm) 0;
-    }
-
-    /* Kicker - similar to Badge/Lozenge */
-    .kicker {
-      display: inline-block;
-      color: #9be7ff;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 600;
-      padding: var(--space-xs) var(--space-sm);
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: var(--radius-sm);
-      margin-bottom: var(--space-sm);
-    }
-
-    /* Card component - elevated surface */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: var(--space-md);
-    }
-
-    .card {
-      background: var(--color-bg-elevated);
-      border: 1px solid var(--color-border-default);
-      border-radius: var(--radius-lg);
-      padding: var(--space-lg);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .card:hover {
-      border-color: var(--color-border-selected);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Timeline row - structured layout */
-    .grid {
-      display: grid;
-      gap: var(--space-md);
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: 96px 1fr;
-      gap: var(--space-md);
-      align-items: flex-start;
-      padding: var(--space-md);
-      border: 1px solid var(--color-border-default);
-      border-radius: var(--radius-md);
-      background: var(--color-surface-sunken);
-      transition: background 0.15s ease;
-    }
-
-    .row:hover {
-      background: var(--color-surface-raised);
-    }
-
-    .time {
-      color: var(--color-text-accent);
-      font-variant-numeric: tabular-nums;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    /* Lozenge/Badge - status indicators */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px var(--space-sm);
-      border-radius: var(--radius-sm);
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      margin-left: var(--space-sm);
-      white-space: nowrap;
-    }
-
-    .badge-info {
-      background: rgba(56, 189, 248, 0.15);
-      color: var(--color-status-info);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-    }
-
-    .badge-success {
-      background: rgba(34, 197, 94, 0.15);
-      color: var(--color-status-success);
-      border: 1px solid rgba(34, 197, 94, 0.3);
-    }
-
-    .badge-warning {
-      background: rgba(251, 191, 36, 0.15);
-      color: var(--color-status-warning);
-      border: 1px solid rgba(251, 191, 36, 0.3);
-    }
-
-    .badge-caution {
-      background: rgba(251, 146, 60, 0.15);
-      color: var(--color-status-caution);
-      border: 1px solid rgba(251, 146, 60, 0.3);
-    }
-
-    /* Button component */
-    .btn {
-      display: inline-block;
-      margin-top: var(--space-sm);
-      padding: var(--space-sm) var(--space-md);
-      border: 1px solid var(--color-border-default);
-      border-radius: var(--radius-sm);
-      color: #e5f5ff;
-      background: #0b2030;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      transition: all 0.15s ease;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background: #0f2d47;
-      border-color: var(--color-status-info);
-      color: var(--color-link-hover);
-      text-decoration: none;
-    }
-
-    .btn:focus-visible {
-      outline: none;
-      box-shadow: var(--focus-ring);
-    }
-
-    /* Links */
-    a {
-      color: var(--color-link);
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-
-    a:hover {
-      color: var(--color-link-hover);
-      text-decoration: underline;
-    }
-
-    a:focus-visible {
-      outline: 2px solid var(--color-status-info);
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
-
-    /* Meta text */
-    .meta {
-      font-size: 12px;
-      color: var(--color-text-secondary);
-      margin-top: var(--space-lg);
-      padding: var(--space-md);
-      background: var(--color-surface-sunken);
-      border-left: 3px solid var(--color-status-info);
-      border-radius: var(--radius-sm);
-    }
-
-    /* Lists */
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    ul li {
-      padding: var(--space-sm) 0;
-      padding-left: var(--space-xl);
-      position: relative;
-      color: var(--color-text-secondary);
-    }
-
-    ul li::before {
-      content: "→";
-      position: absolute;
-      left: 0;
-      color: var(--color-brand);
-      font-weight: bold;
-    }
-
-    /* Footer - fixed navigation */
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(15, 23, 42, 0.96);
-      border-top: 1px solid var(--color-border-default);
-      backdrop-filter: blur(10px);
-    }
-
-    .footer-wrap {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: var(--space-sm) var(--space-lg);
-      display: flex;
-      gap: var(--space-md);
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .pill {
-      padding: 6px var(--space-md);
-      border-radius: var(--radius-full);
-      border: 1px solid var(--color-border-default);
-      color: #cbd5e1;
-      background: var(--color-surface-sunken);
-      font-size: 13px;
-    }
-
-    /* Section message inspired styling */
-    .info-banner {
-      padding: var(--space-md);
-      background: rgba(56, 189, 248, 0.08);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: var(--radius-md);
-      margin: var(--space-lg) 0;
-      display: flex;
-      gap: var(--space-md);
-    }
-
-    .info-banner-icon {
-      color: var(--color-status-info);
-      font-weight: bold;
-      flex-shrink: 0;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 640px) {
-      .row {
-        grid-template-columns: 1fr;
-      }
-      
-      .time {
-        padding-bottom: var(--space-xs);
-        border-bottom: 1px solid var(--color-border-default);
-      }
-
-      .badge {
-        margin-left: 0;
-        margin-top: var(--space-xs);
-      }
-    }
-  </style>
+    </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <h1>飛騨高山 旅のしおり</h1>
-      <nav role="tablist" aria-label="メインナビゲーション">
-        <a class="tab" href="#schedule" role="tab" aria-controls="schedule">スケジュール</a>
-        <a class="tab" href="#spots" role="tab" aria-controls="spots">観光名所</a>
-        <a class="tab" href="#notes" role="tab" aria-controls="notes">メモ</a>
-      </nav>
-    </div>
-  </header>
 
-  <main class="wrap">
-    <!-- Schedule -->
-    <section id="schedule" class="page" role="tabpanel" aria-labelledby="tab-schedule">
-      <span class="kicker">Plan</span>
-      <h2>モデル行程（2日）</h2>
-      
-      <div class="info-banner">
-        <span class="info-banner-icon" aria-hidden="true">ℹ️</span>
-        <p style="margin:0;">移動は天候・路面状況に合わせて調整し、各施設の開館時間は事前に公式で確認してください。</p>
-      </div>
+    <header>
+        <h1>TRAVEL ITINERARY</h1>
+        <p>Explore & Discover</p>
+    </header>
 
-      <div class="grid">
-        <div class="card">
-          <h3>Day 1｜高山市内<span class="badge badge-success">必須</span></h3>
-          <div class="row">
-            <div class="time">09:00</div>
-            <div>
-              古い町並（さんまち）そぞろ歩き → カフェ休憩（食べ歩き・写真）
-              <span class="badge badge-info">徒歩</span>
-              <br>
-              <a class="btn" href="https://www.japan-guide.com/e/e5900.html" target="_blank" rel="noopener">スポット情報</a>
+    <main>
+        
+        <section id="itinerary" class="active">
+            
+            <div class="card">
+                <img src="https://via.placeholder.com/600x360/E6F2F2/004D40?text=Shinkansen" alt="新幹線">
+                <div class="card-content">
+                    <h3>DAY 1: ARRIVAL IN TOKYO</h3>
+                    <p>HOKURIKU SHINKANSEN - From XXX</p>
+                </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="time">11:00</div>
-            <div>
-              高山陣屋（史跡・建築）見学
-              <span class="badge badge-success">推奨</span>
-              <br>
-              <a class="btn" href="https://jinya.gifu.jp/en/" target="_blank" rel="noopener">公式サイト</a>
-            </div>
-          </div>
-          <div class="row">
-            <div class="time">13:00</div>
-            <div>
-              飛騨の里（合掌造り・民俗展示）
-              <span class="badge badge-info">バス</span>
-              <br>
-              <a class="btn" href="https://www.japan-guide.com/e/e5901.html" target="_blank" rel="noopener">解説ページ</a>
-            </div>
-          </div>
-          <div class="row">
-            <div class="time">夕方</div>
-            <div>
-              温泉・宿チェックイン、夜さんぽ（陣屋前・中橋ライトアップ時期は写真）
-              <br>
-              <a class="btn" href="https://www.hidatakayama.or.jp/index.html" target="_blank" rel="noopener">観光公式</a>
-            </div>
-          </div>
-        </div>
 
-        <div class="card">
-          <h3>Day 2｜周辺エリア<span class="badge badge-warning">天候注意</span></h3>
-          <div class="row">
-            <div class="time">08:30</div>
-            <div>
-              白川郷へ移動 → 合掌造り集落散策（展望台は天候次第）
-              <span class="badge badge-caution">車/バス</span>
-              <br>
-              <a class="btn" href="https://shirakawa-go.gr.jp/en/" target="_blank" rel="noopener">白川郷観光協会</a>
+            <div class="card">
+                <div class="card-content">
+                    <h3>旅程詳細</h3>
+                    <ul class="itinerary-list">
+                        <li>NARITA INTERNATIONAL AIRPORT (NT)</li>
+                        <li>KEISEI SKYLINER -> UENO</li>
+                        <li>CHECK-IN: MIMARU TOKYO</li>
+                        <li>DINNER: OMOIDE YOKOCHO</li>
+                    </ul>
+                </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="time">13:30</div>
-            <div>
-              飛騨大鍾乳洞（気温低め・歩きやすい靴）
-              <span class="badge badge-warning">防寒</span>
-              <br>
-              <a class="btn" href="https://www.syonyudo.com/en/" target="_blank" rel="noopener">公式サイト</a>
+
+        </section>
+
+        <section id="spots">
+
+            <div class="card">
+                <img src="https://via.placeholder.com/600x360/E6F2F2/004D40?text=Asakusa" alt="浅草寺">
+                <div class="card-content">
+                    <h3>浅草寺 (Senso-ji Temple)</h3>
+                    <p>東京で最も古く、最も訪問者の多い寺院の一つ。雷門が象徴的です。</p>
+                </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="time">夕方</div>
-            <div>高山へ戻っておみやげ・早めの夕食、解散</div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Spots -->
-    <section id="spots" class="page" role="tabpanel" aria-labelledby="tab-spots">
-      <span class="kicker">Spots</span>
-      <h2>観光名所リンク集</h2>
-      <div class="cards">
-        <article class="card">
-          <h3>飛騨高山 公式観光<span class="badge badge-success">公式</span></h3>
-          <p>イベント・モデルコース・グルメなど総合情報。</p>
-          <a class="btn" href="https://www.hidatakayama.or.jp/index.html" target="_blank" rel="noopener">公式へ</a>
-        </article>
-        <article class="card">
-          <h3>古い町並（さんまち）<span class="badge badge-success">必須</span></h3>
-          <p>江戸風情が残る高山の中心的散策エリア。</p>
-          <a class="btn" href="https://www.japan-guide.com/e/e5900.html" target="_blank" rel="noopener">解説へ</a>
-        </article>
-        <article class="card">
-          <h3>高山陣屋<span class="badge badge-info">史跡</span></h3>
-          <p>国指定史跡の代官所・御役所建築。</p>
-          <a class="btn" href="https://jinya.gifu.jp/en/" target="_blank" rel="noopener">公式へ</a>
-        </article>
-        <article class="card">
-          <h3>飛騨の里<span class="badge badge-info">博物館</span></h3>
-          <p>合掌造り移築の野外博物館。</p>
-          <a class="btn" href="https://www.japan-guide.com/e/e5901.html" target="_blank" rel="noopener">解説へ</a>
-        </article>
-        <article class="card">
-          <h3>白川郷<span class="badge badge-warning">世界遺産</span></h3>
-          <p>合掌造りの集落景観。</p>
-          <a class="btn" href="https://shirakawa-go.gr.jp/en/" target="_blank" rel="noopener">観光協会</a>
-        </article>
-        <article class="card">
-          <h3>飛騨大鍾乳洞<span class="badge badge-caution">防寒</span></h3>
-          <p>標高約900mの観光鍾乳洞。</p>
-          <a class="btn" href="https://www.syonyudo.com/en/" target="_blank" rel="noopener">公式へ</a>
-        </article>
-        <article class="card">
-          <h3>観光案内所<span class="badge badge-success">情報</span></h3>
-          <p>最新パンフや相談窓口。</p>
-          <a class="btn" href="http://www.hida.jp/english/traveltips/practicalguide/4000111.html" target="_blank" rel="noopener">案内所</a>
-        </article>
-      </div>
-    </section>
+            <div class="card">
+                <img src="https://via.placeholder.com/600x360/E6F2F2/004D40?text=Shibuya" alt="渋谷交差点">
+                <div class="card-content">
+                    <h3>渋谷スクランブル交差点</h3>
+                    <p>世界で最も混雑すると言われる交差点。多くの映画にも登場します。</p>
+                </div>
+            </div>
 
-    <!-- Notes -->
-    <section id="notes" class="page" role="tabpanel" aria-labelledby="tab-notes">
-      <span class="kicker">Notes</span>
-      <h2>持ち物・メモ</h2>
-      <ul>
-        <li>防寒・雨具（山間部は気温差大）<span class="badge badge-warning">必須</span></li>
-        <li>徒歩用シューズ（石畳・洞内は滑りやすい）<span class="badge badge-warning">必須</span></li>
-        <li>現金少額（露店・小規模店対策）<span class="badge badge-info">推奨</span></li>
-        <li>モバイルバッテリー（撮影・地図利用）<span class="badge badge-info">推奨</span></li>
-        <li>飲み物・軽食（移動時間長め）<span class="badge badge-success">便利</span></li>
-      </ul>
-      
-      <div class="info-banner">
-        <span class="info-banner-icon" aria-hidden="true">💡</span>
-        <p style="margin:0;">このページは1ファイルで動作し、オフラインでも最低限の表示が可能です（外部リンクは通信が必要）。</p>
-      </div>
-    </section>
-  </main>
+            <div class="card">
+                <img src="https://via.placeholder.com/600x360/E6F2F2/004D40?text=Tokyo+Tower" alt="東京タワー">
+                <div class="card-content">
+                    <h3>東京タワー</h3>
+                    <p>東京の象徴的なランドマーク。展望台からは市街を一望できます。</p>
+                </div>
+            </div>
 
-  <footer>
-    <div class="footer-wrap">
-      <span class="pill">飛騨高山 旅のしおり</span>
-      <span class="pill">
-        <a href="#schedule">Schedule</a>｜<a href="#spots">Spots</a>｜<a href="#notes">Notes</a>
-      </span>
-    </div>
-  </footer>
+        </section>
 
-  <script>
-    const pages = ["schedule", "spots", "notes"];
-    
-    const setActive = (id) => {
-      pages.forEach(p => {
-        const el = document.getElementById(p);
-        const tab = document.querySelector(`a.tab[href="#${p}"]`);
-        if (!el || !tab) return;
-        const on = (p === id);
-        el.classList.toggle("active", on);
-        tab.classList.toggle("active", on);
-        tab.setAttribute("aria-selected", on);
-        el.setAttribute("aria-hidden", !on);
-      });
-    };
-    
-    const route = () => {
-      const id = (location.hash || "#schedule").slice(1);
-      setActive(pages.includes(id) ? id : "schedule");
-    };
-    
-    // Keyboard navigation support
-    document.querySelectorAll('.tab').forEach((tab, index) => {
-      tab.addEventListener('keydown', (e) => {
-        let newIndex = index;
-        if (e.key === 'ArrowRight') {
-          newIndex = (index + 1) % pages.length;
-          e.preventDefault();
-        } else if (e.key === 'ArrowLeft') {
-          newIndex = (index - 1 + pages.length) % pages.length;
-          e.preventDefault();
-        } else {
-          return;
-        }
-        const newTab = document.querySelector(`a.tab[href="#${pages[newIndex]}"]`);
-        if (newTab) {
-          newTab.focus();
-          newTab.click();
-        }
-      });
-    });
-    
-    window.addEventListener("hashchange", route);
-    route();
-  </script>
+    </main>
+
+    <footer>
+        <button class="nav-button active" data-target="itinerary">
+            <div>✈️</div>
+            <div>Itinerary</div>
+        </button>
+        <button class="nav-button" data-target="spots">
+            <div>🗺️</div>
+            <div>Spots</div>
+        </button>
+    </footer>
+
+    <script>
+        // DOMが読み込まれたら実行
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // ナビゲーションボタンをすべて取得
+            const navButtons = document.querySelectorAll('.nav-button');
+            // コンテンツのセクションをすべて取得
+            const sections = document.querySelectorAll('main section');
+
+            // 各ナビゲーションボタンにクリックイベントを設定
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+
+                    // 1. 全てのボタンから 'active' クラスを削除
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    // 2. クリックされたボタンに 'active' クラスを追加
+                    button.classList.add('active');
+
+                    // 3. 表示するターゲットID (data-target属性の値) を取得
+                    const targetId = button.dataset.target;
+
+                    // 4. 全てのセクションを非表示
+                    sections.forEach(section => {
+                        if (section.id === targetId) {
+                            // 5. ターゲットIDと一致するセクションだけ表示
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
