@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>私の旅のしおり</title>
+    <title>旅のしおり</title>
 
     <style>
         /* ======== 全体の基本設定 ======== */
@@ -117,14 +117,58 @@
         .nav-button div {
             font-size: 1.2rem; /* アイコンの代わりの絵文字 */
         }
-
+        /* ======== タイムライン風リスト (ここから追加) ======== */
+        .timeline-list {
+            list-style: none;
+            padding-left: 10px;
+            margin-top: 20px;
+        }
+        .timeline-list li {
+            position: relative;
+            padding: 5px 0 20px 35px; /* 左側にスペース */
+            border-left: 2px solid #E6F2F2; /* 縦のライン */
+        }
+        /* 最後の項目は線が不要 */
+        .timeline-list li:last-child {
+            border-left: 2px solid transparent;
+            padding-bottom: 5px;
+        }
+        /* 時間（ライン上の丸） */
+        .timeline-list li::before {
+            content: '';
+            position: absolute;
+            left: -8px; /* ライン上に配置 */
+            top: 10px;
+            width: 12px;
+            height: 12px;
+            background-color: #00796B; /* テーマカラー */
+            border-radius: 50%;
+            border: 2px solid white;
+            z-index: 1;
+        }
+        .timeline-time {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        .timeline-content h4 {
+            margin: 5px 0;
+            font-size: 1.1rem;
+            color: #004D40;
+        }
+        .timeline-content p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>TRAVEL ITINERARY</h1>
-        <p>Explore & Discover</p>
+        <h1>旅のしおり</h1>
+        <p>～おめでとう飛騨高山旅行編～</p>
     </header>
 
     <main>
@@ -132,21 +176,73 @@
         <section id="itinerary" class="active">
             
             <div class="card">
-                <img src="https://via.placeholder.com/600x360/E6F2F2/004D40?text=Shinkansen" alt="新幹線">
                 <div class="card-content">
-                    <h3>DAY 1: ARRIVAL IN TOKYO</h3>
-                    <p>HOKURIKU SHINKANSEN - From XXX</p>
+                    <h3>DAY 1: 高山へ</h3>
+                    <ul class="timeline-list">
+                        <li>
+                            <div class="timeline-time">06:51</div>
+                            <div class="timeline-content">
+                                <h4>東京発</h4>
+                                <p>早起きごめん</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">08:28</div>
+                            <div class="timeline-content">
+                                <h4>名古屋着</h4>
+                                <p>なごや</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">08:43</div>
+                            <div class="timeline-content">
+                                <h4>名古屋発</h4>
+                                <p>特急に乗ります</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">10:58</div>
+                            <div class="timeline-content">
+                                <h4>高山着</h4>
+                                <p>長旅おつかれ</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-content">
-                    <h3>旅程詳細</h3>
-                    <ul class="itinerary-list">
-                        <li>NARITA INTERNATIONAL AIRPORT (NT)</li>
-                        <li>KEISEI SKYLINER -> UENO</li>
-                        <li>CHECK-IN: MIMARU TOKYO</li>
-                        <li>DINNER: OMOIDE YOKOCHO</li>
+                    <h3>DAY 2: 帰路</h3>
+                    <ul class="timeline-list">
+                        <li>
+                            <div class="timeline-time">17:18</div>
+                            <div class="timeline-content">
+                                <h4>高山発</h4>
+                                <p>帰ります</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">18:54</div>
+                            <div class="timeline-content">
+                                <h4>富山着</h4>
+                                <p>帰りは富山経由</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">19:08</div>
+                            <div class="timeline-content">
+                                <h4>富山発</h4>
+                                <p>富山で飯食って後ろの自由席にしてもいい</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">21:20</div>
+                            <div class="timeline-content">
+                                <h4>東京着</h4>
+                                <p>fin</p>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
