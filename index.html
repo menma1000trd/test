@@ -122,7 +122,7 @@
         
         /* 手書き風フォント用のクラス */
         .handwriting {
-            font-family: 'Yomogi', cursive; /* フォントを Yomogi に変更 */
+            font-family: 'Yomogi', cursive; 
             font-size: 1rem;  
             color: #444;     
             line-height: 1.4; 
@@ -155,6 +155,32 @@
             color: #888;
         }
 
+        /* マップ用コンテナのスタイル */
+        .map-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 100%; /* 高さを幅と同じにする (1:1比率) */
+            border-radius: 12px; /* カードの角丸に合わせる */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* カードの影に合わせる */
+        }
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        /* マップセクション用の説明テキスト */
+        #map p {
+            font-size: 0.9rem;
+            text-align: center;
+            color: #555;
+            margin-top: 10px;
+        }
+
+
         /* ======== フッターナビゲーション ======== */
         footer {
             position: fixed;
@@ -176,6 +202,7 @@
             cursor: pointer;
             padding: 5px;
             text-align: center; 
+            width: 25%; /* 4ボタン均等配置のため */
         }
         .nav-button.active {
             color: #00796B; 
@@ -257,7 +284,7 @@
 
             <div class="card">
                 <div class="card-content">
-                    <h3>DAY 2: 帰路</h3>
+                    <h3>DAY 2: G</h3>
                     <ul class="timeline-list">
                         <li>
                             <div class="timeline-time">08:00</div>
@@ -427,6 +454,15 @@
 
         </section>
 
+        <section id="map">
+            
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1Xti9gB5wtnd6Hvmy6qIfcYv78JE8zQk&ehbc=2E312F" width="640" height="480"></iframe>
+            </div>
+            <p>ピンをタップして場所を確認できます</p>
+
+        </section>
+
         <section id="checklist">
             <div class="card">
                 <div class="card-content">
@@ -457,6 +493,10 @@
         <button class="nav-button" data-target="spots">
             <div>🗺️</div>
             <div>Spots</div>
+        </button>
+        <button class="nav-button" data-target="map">
+            <div>📍</div>
+            <div>Map</div>
         </button>
         <button class="nav-button" data-target="checklist">
             <div>🎒</div>
