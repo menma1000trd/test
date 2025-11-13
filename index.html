@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
 
     <style>
         /* ======== 全体の基本設定 ======== */
@@ -120,9 +120,9 @@
             line-height: 1.5;
         }
         
-        /* 手書き風フォント用のクラス */
+        /* (変更) 手書き風フォント用のクラス */
         .handwriting {
-            font-family: 'Yuji Syuku', serif; 
+            font-family: 'Yomogi', cursive; /* フォントを Yomogi に変更 */
             font-size: 1rem;  
             color: #444;     
             line-height: 1.4; 
@@ -230,6 +230,13 @@
                                 <p class="handwriting">長旅おつかれ</p>
                             </div>
                         </li>
+                        <li>
+                            <div class="timeline-time">19:00</div>
+                            <div class="timeline-content">
+                                <h4>夜ごはん</h4>
+                                <p class="handwriting">フレンチだよーん</p>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -238,6 +245,48 @@
                 <div class="card-content">
                     <h3>DAY 2: 帰路</h3>
                     <ul class="timeline-list">
+                        <li>
+                            <div class="timeline-time">08:00</div>
+                            <div class="timeline-content">
+                                <h4>朝食</h4>
+                                <p class="handwriting">バイキングもりもり</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">09:30</div>
+                            <div class="timeline-content">
+                                <h4>チェックアウト</h4>
+                                <p class="handwriting">向かうぜ</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">10:00</div>
+                            <div class="timeline-content">
+                                <h4>鍾乳洞</h4>
+                                <p class="handwriting">見たことない楽しみ</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">12:00</div>
+                            <div class="timeline-content">
+                                <h4>昼飯</h4>
+                                <p class="handwriting">白川郷で食べてもいい</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">13:00</div>
+                            <div class="timeline-content">
+                                <h4>白川郷</h4>
+                                <p class="handwriting">世界遺産だぜ</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-time">16:00</div>
+                            <div class="timeline-content">
+                                <h4>高山駅</h4>
+                                <p class="handwriting">終わっちゃうよお(&gt;_&lt;)</p>
+                            </div>
+                        </li>
                         <li>
                             <div class="timeline-time">17:18</div>
                             <div class="timeline-content">
@@ -342,7 +391,7 @@
                 <img src="img/image9.jpg" alt="飛騨国分寺">
                 <div class="card-content">
                     <h3>飛騨国分寺</h3>
-                    <p>樹齢1200年を超える大イチョウと、美しい三重Topが目印の、高山市内最古の寺院です。</p>
+                    <p>樹齢1200年を超える大イチョウと、美しい三重塔が目印の、高山市内最古の寺院です。</p>
                 </div>
             </div>
 
@@ -361,29 +410,24 @@
                     <p>平湯温泉や福地温泉など、5つの温泉地の総称。大自然の中の露天風呂が魅力です。</p>
                 </div>
             </div>
-
-            <div class="card">
-                <img src="img/image12.jpg" alt="飛騨古川">
-                <div class="card-content">
-                    <h3>飛騨古川</h3>
-                    <p>白壁土蔵と瀬戸川の鯉が風情たっぷりな「もう一つの古い町並み」。落ち着いた雰囲気が人気です。</p>
-                </div>
-            </div>
-
-        </section>
+            
+            </section>
 
         <section id="checklist">
             <div class="card">
                 <div class="card-content">
                     <h3>持ち物リスト</h3>
                     <ul class="checklist-list">
-                        <li><input type="checkbox" id="item1"><label for="item1">着替え (2日分)</label></li>
+                        <li><input type="checkbox" id="item1"><label for="item1">おめでとうの気持ち</label></li>
                         <li><input type="checkbox" id="item2"><label for="item2">モバイルバッテリー</label></li>
-                        <li><input type="checkbox" id="item3"><label for="item3">充電器 (スマホ・時計)</label></li>
-                        <li><input type="checkbox" id="item4"><label for="item4">常備薬・酔い止め</label></li>
-                        <li><input type="checkbox" id="item5"><label for="item5">保険証</label></li>
-                        <li><input type="checkbox" id="item6"><label for="item6">歩きやすい靴 (必須)</label></li>
-                        <li><input type="checkbox" id="item7"><label for="item7">エコバッグ</label></li>
+                        <li><input type="checkbox" id="item3"><label for="item3">着替え</label></li>
+                        <li><input type="checkbox" id="item4"><label for="item4">パンツ</label></li>
+                        <li><input type="checkbox" id="item5"><label for="item5">免許証</label></li>
+                        <li><input type="checkbox" id="item6"><label for="item6">特急券（わすれそう）</label></li>
+                        <li><input type="checkbox" id="item7"><label for="item7">コンタクト</label></li>
+                        <li><input type="checkbox" id="item8"><label for="item8">スキンケア類（顔をゴシゴシしないこと）</label></li>
+                        <li><input type="checkbox" id="item9"><label for="item9">モバイルバッテリー</G></li>
+                        <li><input type="checkbox" id="item10"><label for="item10">ぷにぷにのおなか</label></li>
                     </ul>
                 </div>
             </div>
@@ -418,11 +462,9 @@
                     navButtons.forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
 
-                    // (変更) ここの変数名も itinerary から schedule に変わっています
                     const targetId = button.dataset.target; 
 
                     sections.forEach(section => {
-                        // (変更) ここのIDも schedule に変わっています
                         if (section.id === targetId) {
                             section.classList.add('active');
                         } else {
