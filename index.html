@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>旅のしおり</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap" rel="stylesheet">
+
     <style>
         /* ======== 全体の基本設定 ======== */
         body {
@@ -31,13 +35,17 @@
             font-size: 1.4rem;
             color: #004D40; /* 濃い緑 */
         }
+        header p {
+            margin: 5px 0 0;
+            color: #004D40;
+            font-size: 0.9rem;
+        }
 
         /* ======== コンテンツのセクション ======== */
         section {
             display: none; /* JavaScriptで切り替えるため、最初は非表示 */
             padding: 15px;
         }
-        /* 最初に表示するセクション */
         section.active {
             display: block;
         }
@@ -48,12 +56,12 @@
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
-            overflow: hidden; /* 画像の角を丸めるため */
+            overflow: hidden; 
         }
         .card img {
             width: 100%;
             height: 180px;
-            object-fit: cover; /* 画像の比率を保ったままトリミング */
+            object-fit: cover; 
         }
         .card-content {
             padding: 15px;
@@ -68,56 +76,7 @@
             line-height: 1.6;
         }
 
-        /* 旅程リスト (画像1枚目下部) */
-        .itinerary-list {
-            list-style: none;
-            padding-left: 0;
-        }
-        .itinerary-list li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 10px;
-        }
-        /* リストのアイコン（簡易的） */
-        .itinerary-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: #00796B; /* 緑 */
-            font-weight: bold;
-        }
-
-        /* ======== フッターナビゲーション (画像共通) ======== */
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #ffffff;
-            border-top: 1px solid #ddd;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-            display: flex; /* 横並び */
-            justify-content: space-around; /* 均等配置 */
-            padding: 10px 0;
-        }
-        .nav-button {
-            background: none;
-            border: none;
-            font-size: 0.8rem;
-            color: #888;
-            cursor: pointer;
-            padding: 5px;
-        }
-        /* JavaScriptで切り替えるアクティブなボタン */
-        .nav-button.active {
-            color: #00796B; /* アクティブな色 */
-            font-weight: bold;
-        }
-        .nav-button div {
-            font-size: 1.2rem; /* アイコンの代わりの絵文字 */
-        }
-        /* ======== タイムライン風リスト (ここから追加) ======== */
+        /* ======== タイムライン風リスト ======== */
         .timeline-list {
             list-style: none;
             padding-left: 10px;
@@ -125,23 +84,21 @@
         }
         .timeline-list li {
             position: relative;
-            padding: 5px 0 20px 35px; /* 左側にスペース */
-            border-left: 2px solid #E6F2F2; /* 縦のライン */
+            padding: 5px 0 20px 35px; 
+            border-left: 2px solid #E6F2F2; 
         }
-        /* 最後の項目は線が不要 */
         .timeline-list li:last-child {
             border-left: 2px solid transparent;
             padding-bottom: 5px;
         }
-        /* 時間（ライン上の丸） */
         .timeline-list li::before {
             content: '';
             position: absolute;
-            left: -8px; /* ライン上に配置 */
+            left: -8px; 
             top: 10px;
             width: 12px;
             height: 12px;
-            background-color: #00796B; /* テーマカラー */
+            background-color: #00796B; 
             border-radius: 50%;
             border: 2px solid white;
             z-index: 1;
@@ -162,6 +119,72 @@
             color: #555;
             line-height: 1.5;
         }
+        
+        /* 手書き風フォント用のクラス */
+        .handwriting {
+            font-family: 'Yuji Syuku', serif; 
+            font-size: 1rem;  
+            color: #444;     
+            line-height: 1.4; 
+        }
+
+        /* ======== 持ち物リスト ======== */
+        .checklist-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist-list li {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .checklist-list input[type="checkbox"] {
+            width: 1.2em;
+            height: 1.2em;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #00796B; 
+        }
+        .checklist-list label {
+            flex: 1;
+            cursor: pointer;
+        }
+        .checklist-list input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        /* ======== フッターナビゲーション ======== */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+            display: flex; 
+            justify-content: space-around; 
+            padding: 10px 0;
+        }
+        .nav-button {
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            color: #888;
+            cursor: pointer;
+            padding: 5px;
+            text-align: center; 
+        }
+        .nav-button.active {
+            color: #00796B; 
+            font-weight: bold;
+        }
+        .nav-button div {
+            font-size: 1.2rem; 
+        }
+
     </style>
 </head>
 <body>
@@ -173,7 +196,7 @@
 
     <main>
         
-        <section id="itinerary" class="active">
+        <section id="schedule" class="active">
             
             <div class="card">
                 <div class="card-content">
@@ -183,28 +206,28 @@
                             <div class="timeline-time">06:51</div>
                             <div class="timeline-content">
                                 <h4>東京発</h4>
-                                <p>早起きごめん</p>
+                                <p class="handwriting">早起きごめん</p>
                             </div>
                         </li>
                         <li>
                             <div class="timeline-time">08:28</div>
                             <div class="timeline-content">
                                 <h4>名古屋着</h4>
-                                <p>なごや</p>
+                                <p class="handwriting">なごや</p>
                             </div>
                         </li>
                         <li>
                             <div class="timeline-time">08:43</div>
                             <div class="timeline-content">
                                 <h4>名古屋発</h4>
-                                <p>特急に乗ります</p>
+                                <p class="handwriting">特急に乗ります</p>
                             </div>
                         </li>
                         <li>
                             <div class="timeline-time">10:58</div>
                             <div class="timeline-content">
                                 <h4>高山着</h4>
-                                <p>長旅おつかれ</p>
+                                <p class="handwriting">長旅おつかれ</p>
                             </div>
                         </li>
                     </ul>
@@ -219,28 +242,28 @@
                             <div class="timeline-time">17:18</div>
                             <div class="timeline-content">
                                 <h4>高山発</h4>
-                                <p>帰ります</p>
+                                <p class="handwriting">帰ります</p>
                             </div>
                         </li>
                         <li>
                             <div class="timeline-time">18:54</div>
                             <div class="timeline-content">
                                 <h4>富山着</h4>
-                                <p>帰りは富山経由</p>
+                                <p class="handwriting">帰りは富山経由</p>
                             </div>
                         </li>
                         <li>
                             <div class="timeline-time">19:08</div>
                             <div class="timeline-content">
                                 <h4>富山発</h4>
-                                <p>富山で飯食って後ろの自由席にしてもいい</p>
+                                <p class="handwriting">富山で飯食って後ろの自由席にしてもいい</p>
                             </div>
                         </li>
                         <li>
                             <div class="timeline-time">21:20</div>
                             <div class="timeline-content">
                                 <h4>東京着</h4>
-                                <p>fin</p>
+                                <p class="handwriting">fin</p>
                             </div>
                         </li>
                     </ul>
@@ -252,69 +275,155 @@
         <section id="spots">
 
             <div class="card">
-                <img src="https://via.placeholder.com/600x360/E6F2F2/004D40?text=Asakusa" alt="浅草寺">
+                <img src="img/image1.jpg" alt="古い町並み">
                 <div class="card-content">
-                    <h3>浅草寺 (Senso-ji Temple)</h3>
-                    <p>東京で最も古く、最も訪問者の多い寺院の一つ。雷門が象徴的です。</p>
+                    <h3>古い町並み (さんまち通り)</h3>
+                    <p>高山観光の中心。江戸時代の商家町の面影が残り、食べ歩きや地酒の試飲が楽しめます。</p>
                 </div>
             </div>
 
             <div class="card">
-                <img src="https://via.placeholder.com/600x360/E6F2F2/004D40?text=Shibuya" alt="渋谷交差点">
+                <img src="img/image2.jpg" alt="飛騨大鍾乳洞">
                 <div class="card-content">
-                    <h3>渋谷スクランブル交差点</h3>
-                    <p>世界で最も混雑すると言われる交差点。多くの映画にも登場します。</p>
+                    <h3>飛騨大鍾乳洞</h3>
+                    <p>日本有数の観光鍾乳洞。夏でも涼しく、ライトアップされた幻想的な空間が広がります。</p>
                 </div>
             </div>
 
             <div class="card">
-                <img src="https://via.placeholder.com/600x360/E6F2F2/004D40?text=Tokyo+Tower" alt="東京タワー">
+                <img src="img/image3.jpg" alt="白川郷">
                 <div class="card-content">
-                    <h3>東京タワー</h3>
-                    <p>東京の象徴的なランドマーク。展望台からは市街を一望できます。</p>
+                    <h3>白川郷 (世界遺産)</h3>
+                    <p>高山からバスで約50分。独特の合掌造り集落が広がる、日本の原風景とも言える世界遺産です。</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="img/image4.jpg" alt="高山陣屋">
+                <div class="card-content">
+                    <h3>高山陣屋</h3>
+                    <p>日本で唯一現存する代官所・郡代役所。江戸時代の役所の様子を垣間見ることができます。</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="img/image5.jpg" alt="宮川朝市">
+                <div class="card-content">
+                    <h3>宮川朝市・陣屋前朝市</h3>
+                    <p>毎朝開催される朝市。新鮮な野菜や果物、民芸品（さるぼぼなど）が並びます。</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="img/image6.jpg" alt="飛騨の里">
+                <div class="card-content">
+                    <h3>飛騨の里 (ひだのさと)</h3>
+                    <p>合掌造りなど飛騨の古い民家を移築・復元した野外博物館。手軽に昔の暮らしを体験できます。</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="img/image7.jpg" alt="高山祭屋台会館">
+                <div class="card-content">
+                    <h3>高山祭屋台会館</h3>
+                    <p>豪華絢爛な「高山祭」で使われる屋台（山車）を常時展示。その精巧な装飾は圧巻です。</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="img/image8.jpg" alt="中橋">
+                <div class="card-content">
+                    <h3>中橋 (なかばし)</h3>
+                    <p>高山のシンボル的な赤い橋。宮川と古い町並みを背景にした絶好の写真スポットです。</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="img/image9.jpg" alt="飛騨国分寺">
+                <div class="card-content">
+                    <h3>飛騨国分寺</h3>
+                    <p>樹齢1200年を超える大イチョウと、美しい三重Topが目印の、高山市内最古の寺院です。</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="img/image10.jpg" alt="新穂高ロープウェイ">
+                <div class="card-content">
+                    <h3>新穂高ロープウェイ</h3>
+                    <p>2階建てゴンドラが特徴。標高2,156mの山頂展望台から北アルプスの大パノラマを楽しめます。</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="img/image11.jpg" alt="奥飛騨温泉郷">
+                <div class="card-content">
+                    <h3>奥飛騨温泉郷</h3>
+                    <p>平湯温泉や福地温泉など、5つの温泉地の総称。大自然の中の露天風呂が魅力です。</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="img/image12.jpg" alt="飛騨古川">
+                <div class="card-content">
+                    <h3>飛騨古川</h3>
+                    <p>白壁土蔵と瀬戸川の鯉が風情たっぷりな「もう一つの古い町並み」。落ち着いた雰囲気が人気です。</p>
                 </div>
             </div>
 
         </section>
 
+        <section id="checklist">
+            <div class="card">
+                <div class="card-content">
+                    <h3>持ち物リスト</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" id="item1"><label for="item1">着替え (2日分)</label></li>
+                        <li><input type="checkbox" id="item2"><label for="item2">モバイルバッテリー</label></li>
+                        <li><input type="checkbox" id="item3"><label for="item3">充電器 (スマホ・時計)</label></li>
+                        <li><input type="checkbox" id="item4"><label for="item4">常備薬・酔い止め</label></li>
+                        <li><input type="checkbox" id="item5"><label for="item5">保険証</label></li>
+                        <li><input type="checkbox" id="item6"><label for="item6">歩きやすい靴 (必須)</label></li>
+                        <li><input type="checkbox" id="item7"><label for="item7">エコバッグ</label></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer>
-        <button class="nav-button active" data-target="itinerary">
+        <button class="nav-button active" data-target="schedule">
             <div>✈️</div>
-            <div>Itinerary</div>
+            <div>Schedule</div>
         </button>
         <button class="nav-button" data-target="spots">
             <div>🗺️</div>
             <div>Spots</div>
         </button>
+        <button class="nav-button" data-target="checklist">
+            <div>🎒</div>
+            <div>Checklist</div>
+        </button>
     </footer>
 
     <script>
-        // DOMが読み込まれたら実行
         document.addEventListener('DOMContentLoaded', () => {
             
-            // ナビゲーションボタンをすべて取得
             const navButtons = document.querySelectorAll('.nav-button');
-            // コンテンツのセクションをすべて取得
             const sections = document.querySelectorAll('main section');
 
-            // 各ナビゲーションボタンにクリックイベントを設定
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
 
-                    // 1. 全てのボタンから 'active' クラスを削除
                     navButtons.forEach(btn => btn.classList.remove('active'));
-                    // 2. クリックされたボタンに 'active' クラスを追加
                     button.classList.add('active');
 
-                    // 3. 表示するターゲットID (data-target属性の値) を取得
-                    const targetId = button.dataset.target;
+                    // (変更) ここの変数名も itinerary から schedule に変わっています
+                    const targetId = button.dataset.target; 
 
-                    // 4. 全てのセクションを非表示
                     sections.forEach(section => {
+                        // (変更) ここのIDも schedule に変わっています
                         if (section.id === targetId) {
-                            // 5. ターゲットIDと一致するセクションだけ表示
                             section.classList.add('active');
                         } else {
                             section.classList.remove('active');
