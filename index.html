@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;600&family=Yomogi&display=swap"
+        href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;600&family=Yomogi&family=Hachi+Maru+Pop&display=swap"
         rel="stylesheet">
 
     <script src="https://unpkg.com/feather-icons"></script>
@@ -80,7 +80,7 @@
         /* メインコンテンツ領域（フッター分だけ下に余白） */
         main {
             padding-bottom: 80px;
-            padding-top: 105px;
+            padding-top: 96px; /* ★修正: 105px から 96px に変更 */
             /* 固定ヘッダー分の高さ */
         }
 
@@ -269,7 +269,7 @@
 
         /* 【変更点】手書き風フォント (Yomogi) (維持) */
         .handwriting {
-            font-family: 'Yomogi', cursive;
+            font-family: 'Hachi Maru Pop', cursive; /* ★修正: 'Yomogi' から変更 */
             font-size: 1rem;
             color: #444;
             /* 他のテキストより少し濃くして目立たせる */
@@ -313,7 +313,7 @@
         .spots-carousel .card {
             flex: 0 0 85%;
             margin-right: 16px;
-            scroll-snap-align: start;
+            scroll-snap-align: center; /* ★修正: 'start' から変更 */
             max-width: 300px;
         }
 
@@ -396,7 +396,7 @@
         .map-container {
             position: relative;
             overflow: hidden;
-            width: 100%;
+            width: auto; /* ★修正: 100% から変更 (インラインのmarginと競合するため) */
             padding-top: 75%;
             border-radius: 8px;
             box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px rgba(9, 30, 66, 0.31);
