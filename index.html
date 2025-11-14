@@ -33,11 +33,14 @@
             font-weight: 400; 
             margin: 0;
             padding: 0;
-            background-color: transparent; 
+            /* 【修正点】bodyの背景色は元に戻す */
+            background-color: var(--color-background-body); 
             color: var(--color-text-primary);
             -webkit-font-smoothing: antialiased; 
             position: relative; 
-            z-index: 1; 
+            
+            /* 【修正点】bodyを重ね順の基準(スタッキングコンテキスト)にする */
+            isolation: isolate;
         }
 
         /* うっすら透過した背景画像を全体に追加 */
@@ -57,8 +60,9 @@
             /* --- 透過度 15% (ご指定) --- */
             opacity: 0.15; 
             
-            background-color: var(--color-background-body); 
+            /* 【修正点】z-indexを-1にし、親(body)のisolationと組み合わせる */
             z-index: -1; 
+            /* background-color は body 側が担当するので不要 */
         }
 
 
@@ -232,7 +236,7 @@
             line-height: 1.5;
         }
         
-        /* 【変更点】手書き風フォント (はちまるポップ) */
+        /* 手書き風フォント (はちまるポップ) */
         .handwriting {
             font-family: 'Hachi Maru Pop', cursive; 
             font-size: 1rem;  
