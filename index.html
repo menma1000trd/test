@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>旅のしおり</title>
 
+    <!-- 【変更点】リッチなフォント3種類 + はちまるポップを読み込み -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;600&family=Yomogi&family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;600&family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
     
+    <!-- アイコンライブラリ -->
     <script src="https://unpkg.com/feather-icons"></script> 
 
     <style>
@@ -33,17 +35,15 @@
             font-weight: 400; 
             margin: 0;
             padding: 0;
-            /* 【修正点】bodyの背景色は元に戻す */
-            background-color: var(--color-background-body); 
+            /* 【修正点】body自体の背景色は透明にし、下の疑似要素が透けるようにする */
+            background-color: transparent; 
             color: var(--color-text-primary);
             -webkit-font-smoothing: antialiased; 
             position: relative; 
-            
-            /* 【修正点】bodyを重ね順の基準(スタッキングコンテキスト)にする */
-            isolation: isolate;
+            z-index: 1; /* 疑似要素より手前に */
         }
 
-        /* うっすら透過した背景画像を全体に追加 */
+        /* 【修正点】うっすら透過した背景画像を全体に追加 (正常なロジック) */
         body::before {
             content: '';
             position: fixed; 
@@ -60,9 +60,10 @@
             /* --- 透過度 15% (ご指定) --- */
             opacity: 0.15; 
             
-            /* 【修正点】z-indexを-1にし、親(body)のisolationと組み合わせる */
-            z-index: -1; 
-            /* background-color は body 側が担当するので不要 */
+            /* 【修正点】背景色(ベース)を ::before が担当する */
+            background-color: var(--color-background-body); 
+            
+            z-index: -1; /* コンテンツの背後に配置 */
         }
 
 
@@ -236,7 +237,7 @@
             line-height: 1.5;
         }
         
-        /* 手書き風フォント (はちまるポップ) */
+        /* 【変更点】手書き風フォント (はちまるポップ) */
         .handwriting {
             font-family: 'Hachi Maru Pop', cursive; 
             font-size: 1rem;  
