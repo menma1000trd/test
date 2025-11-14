@@ -22,48 +22,43 @@
             /* モダンデザイン用のベースカラー */
             --color-text-primary: #172B4D; 
             --color-text-secondary: #5E6C84;
-            --color-background-body: #FAFBFC; /* うっすらグレーのベース色 */
+            --color-background-body: #FAFBFC; 
             --color-background-card: #FFFFFF;
             --color-border: #DFE1E6;
             --color-outline-focus: #4C9AFF; 
         }
 
         body {
-            /* 【変更点】本文の基本フォントを Noto Sans JP に */
             font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            font-weight: 400; /* 標準の太さ */
+            font-weight: 400; 
             margin: 0;
             padding: 0;
-            /* body自体の背景色は透明にし、下の疑似要素が透けるようにする */
             background-color: transparent; 
             color: var(--color-text-primary);
             -webkit-font-smoothing: antialiased; 
-            position: relative; /* 疑似要素の基準点 */
-            z-index: 1; /* 疑似要素より手前に */
+            position: relative; 
+            z-index: 1; 
         }
 
-        /* 【変更点】うっすら透過した背景画像を全体に追加 */
+        /* うっすら透過した背景画像を全体に追加 */
         body::before {
             content: '';
-            position: fixed; /* 画面に固定 */
+            position: fixed; 
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             
             /* --- ここに背景画像を指定 --- */
-            /* (例: AI生成した和紙のテクスチャや飛騨の山並みなど) */
-            background-image: url('img/hida-texture.jpg'); 
+            background-image: url('img/hida-texture.png'); 
             background-size: cover;
             background-position: center;
             
-            /* --- ここで透過させる --- */
-            opacity: 0.15; /* 15% (うっすら) */
+            /* --- 透過度 15% (ご指定) --- */
+            opacity: 0.15; 
             
-            /* 画像がない場合や読み込めない場合も、ベースのグレーが適用される */
             background-color: var(--color-background-body); 
-            
-            z-index: -1; /* コンテンツの背後に配置 */
+            z-index: -1; 
         }
 
 
@@ -73,9 +68,16 @@
             padding-top: 105px; /* 固定ヘッダー分の高さ */
         }
 
-        /* ======== ヘッダー (固定化) ======== */
+        /* ======== ヘッダー (すりガラス + グラデーション) ======== */
         header {
-            background-color: var(--color-primary-light); 
+            /* 【変更点】背景を「半透明のグラデーション」に変更 */
+            /* 上端(80%透過)から下端(70%透過)への微妙なグラデーション */
+            background: linear-gradient(
+                to bottom, 
+                rgba(230, 242, 242, 0.8), /* #E6F2F2 の 80% */
+                rgba(230, 242, 242, 0.7)  /* #E6F2F2 の 70% */
+            );
+            
             padding: 20px;
             text-align: center;
             position: sticky;
@@ -83,8 +85,12 @@
             z-index: 100; 
             border-bottom: 1px solid var(--color-border);
             box-shadow: 0 1px 1px rgba(9, 30, 66, 0.08);
+
+            /* 【変更点】すりガラス効果 (blur値は少し強めに) */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); 
         }
-        /* 【変更点】見出しフォント */
+        
         header h1 {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             font-weight: 700;
@@ -94,7 +100,7 @@
         }
         header p {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            font-weight: 400; /* サブタイトルは少し細く */
+            font-weight: 400; 
             margin: 5px 0 0;
             color: var(--color-primary-deep);
             font-size: 1rem;
@@ -107,7 +113,6 @@
         section.active {
             display: block;
         }
-        /* セクション共通の左右余白コンテナ */
         .container {
             padding: 0 16px;
         }
@@ -115,7 +120,7 @@
 
         /* ======== カード型レイアウト (モダン化) ======== */
         .card {
-            background-color: var(--color-background-card); /* 背景色を明示 */
+            background-color: var(--color-background-card); 
             border-radius: 8px; 
             box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px rgba(9, 30, 66, 0.31);
             margin-bottom: 24px;
@@ -130,7 +135,6 @@
         .card-content {
             padding: 20px;
         }
-        /* 【変更点】見出しフォント */
         .card-content h3 {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             font-weight: 700;
@@ -139,7 +143,6 @@
             color: var(--color-primary-deep);
             font-size: 1.25rem;
         }
-        /* 【変更点】本文フォント (色を少し薄く) */
         .card-content p, .card-content ul {
             font-family: 'Noto Sans JP', sans-serif;
             font-size: 0.95rem;
@@ -155,7 +158,6 @@
             background-color: var(--color-primary-light);
             padding: 4px;
         }
-        /* 【変更点】見出しフォント */
         .day-tab-button {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             font-weight: 700;
@@ -209,7 +211,6 @@
             border: 3px solid var(--color-background-card); 
             z-index: 1;
         }
-        /* 【変更点】本文フォント (少し太め) */
         .timeline-time {
             font-family: 'Noto Sans JP', sans-serif;
             font-weight: 600; 
@@ -217,7 +218,6 @@
             color: var(--color-text-primary);
             margin-bottom: 4px; 
         }
-        /* 【変更点】見出しフォント */
         .timeline-content h4 {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             font-weight: 700;
@@ -225,20 +225,19 @@
             font-size: 1.1rem;
             color: var(--color-primary-deep);
         }
-        /* 【変更点】本文フォント (色を少し薄く) */
         .timeline-content p {
-            font-family: 'Noto Sans JP', sans-serif; /* Yomogiが指定されてないPタグ用 */
+            font-family: 'Noto Sans JP', sans-serif; 
             margin: 0;
             font-size: 0.9rem;
             color: var(--color-text-secondary);
             line-height: 1.5;
         }
         
-        /* 【変更点】手書き風フォント (Yomogi) (維持) */
+        /* 手書き風フォント (Yomogi) (維持) */
         .handwriting {
             font-family: 'Yomogi', cursive; 
             font-size: 1rem;  
-            color: #444; /* 他のテキストより少し濃くして目立たせる */
+            color: #444; 
             line-height: 1.4; 
         }
 
@@ -247,7 +246,6 @@
             padding: 0; 
         }
         
-        /* 【変更点】見出しフォント */
         #spots h3 {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             font-weight: 700;
@@ -323,7 +321,6 @@
             outline: 2px solid var(--color-outline-focus);
             outline-offset: 2px;
         }
-        /* 【変更点】本文フォント */
         .checklist-list label {
             font-family: 'Noto Sans JP', sans-serif;
             flex: 1;
@@ -353,7 +350,6 @@
             height: 100%;
             border: 0;
         }
-        /* 【変更点】本文フォント */
         #map p {
             font-family: 'Noto Sans JP', sans-serif;
             font-size: 0.9rem;
@@ -368,7 +364,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: var(--color-background-card); /* 背景色を明示 */
+            background-color: var(--color-background-card); 
             box-shadow: 0 -1px 1px rgba(9, 30, 66, 0.08); 
             display: flex; 
             justify-content: space-around; 
@@ -392,7 +388,6 @@
             transition: color 0.2s ease-in-out;
             outline-offset: 2px; 
         }
-        /* 【変更点】本文フォント (少し細く) */
         .nav-button span {
             font-family: 'Noto Sans JP', sans-serif;
             font-weight: 400;
@@ -405,7 +400,6 @@
         .nav-button.active {
             color: var(--color-primary-medium); 
         }
-        /* 【変更点】アクティブなタブのテキストを太く */
         .nav-button.active span {
             font-weight: 600; 
         }
@@ -598,7 +592,7 @@
                     <img src="img/image3.jpg" alt="白川郷">
                     <div class="card-content">
                         <h3>白川郷 (世界遺産)</h3>
-                        <p>高山からバスで約50分。独特の合掌造り集落が広がる、日本の原風景とも言える世界遺産です。</p>
+                        <p>高山からバスで約50分。独特の合掌造り集largeが広がる、日本の原風景とも言える世界遺産です。</p>
                     </div>
                 </div>
 
@@ -653,7 +647,7 @@
                 <div class="card">
                     <img src="img/image10.jpg" alt="新穂高ロープウェイ">
                     <div class="card-content">
-                        <h3>新穂高ローPウェイ</h3>
+                        <h3>新穂高ロープウェイ</h3>
                         <p>2階建てゴンドラが特徴。標高2,156mの山頂展望台から北アルプスの大パノラマを楽しめます。</p>
                     </div>
                 </div>
