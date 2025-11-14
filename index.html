@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&family=Yomogi&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/feather-icons"></script> 
 
@@ -22,47 +22,68 @@
             /* モダンデザイン用のベースカラー */
             --color-text-primary: #172B4D; /* Atlassian風テキストカラー */
             --color-text-secondary: #5E6C84;
-            --color-background-body: #FAFBFC; /* 非常に薄いグレー背景 */
+            --color-background-body: #FAFBFC; 
             --color-background-card: #FFFFFF;
             --color-border: #DFE1E6;
-            --color-outline-focus: #4C9AFF; /* フォーカス時のアウトラインカラー */
+            --color-outline-focus: #4C9AFF; 
         }
 
         body {
-            /* モダンなシステムフォントスタックを優先 */
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            /* 【変更点】本文フォントを Noto Sans JP に指定 */
+            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--color-background-body);
             color: var(--color-text-primary);
-            -webkit-font-smoothing: antialiased; /* フォントを滑らかに */
+            -webkit-font-smoothing: antialiased; 
         }
 
-        /* メインコンテンツ領域（フッター分だけ下に余白） */
         main {
             padding-bottom: 80px; 
-            /* ヘッダーが固定されたため、その分だけ開始位置を下げる */
-            /* ヘッダーのpadding(20*2) + h1(24) + p(16+5) = 約85px */
             padding-top: 105px; 
         }
 
-        /* ======== ヘッダー (固定化) ======== */
+        /* ======== ヘッダー (固定化 + 背景画像) ======== */
         header {
             background-color: var(--color-primary-light); 
             padding: 20px;
             text-align: center;
             
-            /* 【変更点】ヘッダーを固定 */
             position: sticky;
             top: 0;
-            z-index: 100; /* 他の要素より手前に */
+            z-index: 100; 
             border-bottom: 1px solid var(--color-border);
             box-shadow: 0 1px 1px rgba(9, 30, 66, 0.08);
+
+            /* 【変更点】背景にうっすら画像を重ねる */
+            position: relative; /* 重ね合わせの基準 */
+            overflow: hidden; /* 画像のはみ出し防止 */
         }
+        
+        /* ヘッダーの背景画像（疑似要素） */
+        header::before {
+            content: '';
+            position: absolute;
+            bottom: 0; /* 下端に配置 */
+            left: 0;
+            right: 0;
+            height: 100%; /* 高さを100%に */
+            /* 山のシルエットのような画像を想定 
+               (これはダミーのSVGですが、AI生成画像などに置き換え可能です)
+            */
+            background-image: url("data:image/svg+xml,%3Csvg width='800' height='100' viewBox='0 0 800 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 100H800V65.8016C800 65.8016 755.333 54.269 716 65.8016C676.667 77.3341 627.333 46.5491 596 54.269C564.667 61.9889 524.667 86.8667 488 77.3341C451.333 67.8016 414.667 38.63 380 46.5491C345.333 54.4683 310.667 85.2533 274 77.3341C237.333 69.4149 200.667 34.814 164 46.5491C127.333 58.2842 87.3333 80.6827 48 65.8016C8.66667 50.9205 0 65.8016 0 65.8016V100Z' fill='%23004D40'/%3E%3C/svg%3E");
+            background-size: cover; /* 全体をカバー */
+            background-position: bottom center;
+            opacity: 0.1; /* うっすらと透過 */
+            z-index: -1; /* テキストの背後に */
+        }
+        
         header h1 {
+            /* 【変更点】見出しフォント (明朝体) に変更 */
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 700; /* 太めに */
             margin: 0;
-            font-size: 1.5rem; 
-            font-weight: 600; 
+            font-size: 1.6rem; /* 少し大きくして威厳を */
             color: var(--color-primary-deep);
         }
         header p {
@@ -79,13 +100,11 @@
         section.active {
             display: block;
         }
-        /* セクション共通の左右余白コンテナ */
         .container {
             padding: 0 16px;
         }
 
-
-        /* ======== カード型レイアウト (モダン化) ======== */
+        /* ======== カード型レイアウト ======== */
         .card {
             background-color: var(--color-background-card);
             border-radius: 8px; 
@@ -103,15 +122,17 @@
             padding: 20px;
         }
         .card-content h3 {
+            /* 【変更点】見出しフォント (明朝体) に変更 */
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 600;
             margin-top: 0;
             margin-bottom: 16px;
             color: var(--color-primary-deep);
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.3rem; /* 少し大きく */
         }
         .card-content p, .card-content ul {
             font-size: 0.95rem;
-            line-height: 1.6;
+            line-height: 1.7; /* 行間を少し広げて読みやすく */
             color: var(--color-text-secondary);
         }
 
@@ -130,7 +151,7 @@
             background-color: transparent;
             color: var(--color-primary-deep);
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 700; /* タブの文字を太く */
             border-radius: 6px;
             transition: all 0.2s ease-in-out;
             cursor: pointer;
@@ -141,14 +162,14 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
         .day-content {
-            display: none; /* JSで active をトグル */
-            padding: 0 16px; /* 左右余白 */
+            display: none; 
+            padding: 0 16px; 
         }
         .day-content.active {
             display: block;
         }
 
-        /* ======== タイムライン風リスト (モダン化) ======== */
+        /* ======== タイムライン風リスト ======== */
         .timeline-list {
             list-style: none;
             padding-left: 10px;
@@ -156,7 +177,7 @@
         }
         .timeline-list li {
             position: relative;
-            padding: 0px 0 24px 35px; /* パディング調整 */
+            padding: 0px 0 24px 35px; 
             border-left: 2px solid var(--color-primary-light); 
         }
         .timeline-list li:last-child {
@@ -172,19 +193,21 @@
             height: 14px;
             background-color: var(--color-primary-medium); 
             border-radius: 50%;
-            border: 3px solid var(--color-background-card); /* 背景色で縁取り */
+            border: 3px solid var(--color-background-card); 
             z-index: 1;
         }
         .timeline-time {
-            font-weight: 600;
+            font-weight: 700; /* 時刻を太く */
             font-size: 0.9rem;
             color: var(--color-text-primary);
             margin-bottom: 4px; 
         }
         .timeline-content h4 {
-            margin: 0 0 5px 0;
-            font-size: 1.1rem;
+            /* 【変更点】見出しフォント (明朝体) に変更 */
+            font-family: 'Noto Serif JP', serif;
             font-weight: 600;
+            margin: 0 0 5px 0;
+            font-size: 1.15rem; /* 少し大きく */
             color: var(--color-primary-deep);
         }
         .timeline-content p {
@@ -202,18 +225,19 @@
             line-height: 1.4; 
         }
 
-        /* ======== Spots セクション (横スクロール化) ======== */
+        /* ======== Spots セクション ======== */
         #spots {
-            padding: 0; /* セクション自体の余白は0に */
+            padding: 0; 
         }
         
-        /* 【修正点】h3の余白を復活 */
         #spots h3 {
-            padding: 0 16px; /* 左右の余白を復活 */
+            padding: 0 16px; 
             margin-bottom: 16px;
-            margin-top: 0; /* h3のデフォルトマージンをリセット */
-            font-size: 1.25rem;
+            margin-top: 0; 
+            /* 【変更点】見出しフォント (明朝体) に変更 */
+            font-family: 'Noto Serif JP', serif;
             font-weight: 600;
+            font-size: 1.3rem;
             color: var(--color-primary-deep);
         }
 
@@ -222,7 +246,7 @@
             overflow-x: scroll;
             -webkit-overflow-scrolling: touch; 
             scroll-snap-type: x mandatory; 
-            padding: 0 16px 10px; /* カルーセル自体の左右余白 */
+            padding: 0 16px 10px; 
             margin-bottom: 16px; 
         }
 
@@ -237,10 +261,16 @@
         }
 
         .spots-carousel .card img { height: 150px; }
-        .spots-carousel .card .card-content h3 { font-size: 1.1rem; margin-bottom: 8px; }
-        .spots-carousel .card .card-content p { font-size: 0.85rem; }
+        .spots-carousel .card .card-content h3 { 
+            font-size: 1.1rem; /* カルーセル内は少し小さめを維持 */
+            margin-bottom: 8px; 
+        }
+        .spots-carousel .card .card-content p { 
+            font-size: 0.85rem; 
+            line-height: 1.6; /* 行間調整 */
+        }
 
-        /* ======== 持ち物リスト (モダン化) ======== */
+        /* ======== 持ち物リスト ======== */
         .checklist-list {
             list-style: none;
             padding-left: 0;
@@ -294,7 +324,7 @@
             color: var(--color-text-secondary);
         }
 
-        /* マップ用コンテナ (モダン化) */
+        /* ======== マップ用コンテナ ======== */
         .map-container {
             position: relative;
             overflow: hidden;
@@ -318,7 +348,7 @@
             margin-top: 15px;
         }
 
-        /* ======== フッターナビゲーション (モダン化 & SVGアイコン化) ======== */
+        /* ======== フッターナビゲーション ======== */
         footer {
             position: fixed;
             bottom: 0;
@@ -347,6 +377,7 @@
             gap: 4px; 
             transition: color 0.2s ease-in-out;
             outline-offset: 2px; 
+            font-weight: 500; /* フッターテキストのウェイト */
         }
         .nav-button:focus {
              outline: 2px solid var(--color-outline-focus);
@@ -354,7 +385,7 @@
         }
         .nav-button.active {
             color: var(--color-primary-medium); 
-            font-weight: 600; 
+            font-weight: 700; /* アクティブ時も太く */
         }
         
         .nav-button svg {
@@ -395,41 +426,6 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="timeline-time">08:28</div>
-                                <div class="timeline-content">
-                                    <h4>名古屋着</h4>
-                                    <p class="handwriting">なごや</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">08:43</div>
-                                <div class="timeline-content">
-                                    <h4>名古屋発</h4>
-                                    <p class="handwriting">特急に乗ります</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">10:58</div>
-                                <div class="timeline-content">
-                                    <h4>高山着</h4>
-                                    <p class="handwriting">長旅おつかれ</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">12:00</div>
-                                <div class="timeline-content">
-                                    <h4>昼飯</h4>
-                                    <p class="handwriting">どうしよう</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">13:00</div>
-                                <div class="timeline-content">
-                                    <h4>どうしよう</h4>
-                                    <p class="handwriting">どうしよう</p>
-                                </div>
-                            </li>
-                            <li>
                                 <div class="timeline-time">19:00</div>
                                 <div class="timeline-content">
                                     <h4>夜ごはん</h4>
@@ -450,62 +446,6 @@
                                 <div class="timeline-content">
                                     <h4>朝食</h4>
                                     <p class="handwriting">バイキングもりもり</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">09:30</div>
-                                <div class="timeline-content">
-                                    <h4>チェックアウト</h4>
-                                    <p class="handwriting">向かうぜ</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">10:00</div>
-                                <div class="timeline-content">
-                                    <h4>鍾乳洞</h4>
-                                    <p class="handwriting">見たことない楽しみ</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">12:00</div>
-                                <div class="timeline-content">
-                                    <h4>昼飯</h4>
-                                    <p class="handwriting">白川郷で食べてもいい</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">13:00</div>
-                                <div class="timeline-content">
-                                    <h4>白川郷</h4>
-                                    <p class="handwriting">世界遺産だぜ</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">16:00</div>
-                                <div class="timeline-content">
-                                    <h4>高山駅</h4>
-                                    <p class="handwriting">終わっちゃうよお(>_<)</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">17:18</div>
-                                <div class="timeline-content">
-                                    <h4>高山発</h4>
-                                    <p class="handwriting">帰ります</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">18:54</div>
-                                <div class="timeline-content">
-                                    <h4>富山着</h4>
-                                    <p class="handwriting">帰りは富山経由</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-time">19:08</div>
-                                <div class="timeline-content">
-                                    <h4>富山発</h4>
-                                    <p class="handwriting">富山で飯食って後ろの自由席にしてもいい</p>
                                 </div>
                             </li>
                             <li>
@@ -540,71 +480,7 @@
                         <p>日本有数の観光鍾乳洞。夏でも涼しく、ライトアップされた幻想的な空間が広がります。</p>
                     </div>
                 </div>
-
-                <div class="card">
-                    <img src="img/image3.jpg" alt="白川郷">
-                    <div class="card-content">
-                        <h3>白川郷 (世界遺産)</h3>
-                        <p>高山からバスで約50分。独特の合掌造り集落が広がる、日本の原風景とも言える世界遺産です。</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="img/image4.jpg" alt="高山陣屋">
-                    <div class="card-content">
-                        <h3>高山陣屋</h3>
-                        <p>日本で唯一現存する代官所・郡代役所。江戸時代の役所の様子を垣間見ることができます。</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="img/image5.jpg" alt="宮川朝市">
-                    <div class="card-content">
-                        <h3>宮川朝市・陣屋前朝市</h3>
-                        <p>毎朝開催される朝市。新鮮な野菜や果物、民芸品（さるぼぼなど）が並びます。</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="img/image6.jpg" alt="飛騨の里">
-                    <div class="card-content">
-                        <h3>飛騨の里 (ひだのさと)</h3>
-                        <p>合掌造りなど飛騨の古い民家を移築・復元した野外博物館。手軽に昔の暮らしを体験できます。</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="img/image7.jpg" alt="高山祭屋台会館">
-                    <div class="card-content">
-                        <h3>高山祭屋台会館</h3>
-                        <p>豪華絢爛な「高山祭」で使われる屋台（山車）を常時展示。その精巧な装飾は圧巻です。</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="img/image8.jpg" alt="中橋">
-                    <div class="card-content">
-                        <h3>中橋 (なかばし)</h3>
-                        <p>高山のシンボル的な赤い橋。宮川と古い町並みを背景にした絶好の写真スポットです。</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="img/image9.jpg" alt="飛騨国分寺">
-                    <div class="card-content">
-                        <h3>飛騨国分寺</h3>
-                        <p>樹齢1200年を超える大イチョウと、美しい三重塔が目印の、高山市内最古の寺院です。</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="img/image10.jpg" alt="新穂高ロープウェイ">
-                    <div class="card-content">
-                        <h3>新穂高ロープウェイ</h3>
-                        <p>2階建てゴンドラが特徴。標高2,156mの山頂展望台から北アルプスの大パノラマを楽しめます。</p>
-                    </div>
-                </div>
-
+                
                 <div class="card">
                     <img src="img/image11.jpg" alt="奥飛騨温泉郷">
                     <div class="card-content">
@@ -616,7 +492,8 @@
         </section>
 
         <section id="map">
-            <div class="container"> <div class="card"> 
+            <div class="container"> 
+                <div class="card"> 
                     <div class="card-content" style="padding-bottom: 0;"> 
                         <h3>周辺マップ</h3> 
                     </div>
@@ -631,7 +508,8 @@
         </section>
 
         <section id="checklist">
-            <div class="container"> <div class="card">
+            <div class="container"> 
+                <div class="card">
                     <div class="card-content">
                         <h3>持ち物リスト</h3>
                         <ul class="checklist-list">
