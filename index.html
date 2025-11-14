@@ -25,6 +25,7 @@
             --color-background-body: #FAFBFC; /* 非常に薄いグレー背景 */
             --color-background-card: #FFFFFF;
             --color-border: #DFE1E6;
+            --color-outline-focus: #4C9AFF; /* フォーカス時のアウトラインカラー */
         }
 
         body {
@@ -156,6 +157,54 @@
             line-height: 1.4; 
         }
 
+        /* ======== Spots セクション (横スクロール化) ======== */
+        #spots {
+            padding: 0; /* 横スクロールのための余白調整 */
+        }
+
+        .spots-carousel {
+            display: flex; /* 横並びに */
+            overflow-x: scroll; /* 横スクロールを可能に */
+            -webkit-overflow-scrolling: touch; /* iOSでのスクロールをスムーズに */
+            scroll-snap-type: x mandatory; /* スクロールをカードごとにスナップ */
+            padding: 0 16px 10px; /* 左右の余白と下部のシャドウのための余白 */
+            margin-bottom: 16px; /* スクロール領域の下に余白 */
+        }
+
+        .spots-carousel::-webkit-scrollbar {
+            display: none; /* スクロールバーを非表示 (任意) */
+        }
+        .spots-carousel {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .spots-carousel .card {
+            flex: 0 0 85%; /* カードの幅を親の85%に設定 (約1.5枚見せる) */
+            margin-right: 16px; /* カード間の余白 */
+            scroll-snap-align: start; /* カードの先頭でスナップ */
+            max-width: 300px; /* カードの最大幅を設定 */
+        }
+
+        /* 横スクロールカード内の画像調整 */
+        .spots-carousel .card img {
+            height: 150px; /* 高さを少し低く */
+        }
+        .spots-carousel .card .card-content h3 {
+            font-size: 1.1rem; /* スポット名を少し小さく */
+            margin-bottom: 8px;
+        }
+        .spots-carousel .card .card-content p {
+            font-size: 0.85rem; /* 説明文を少し小さく */
+        }
+
+        /* 横スクロールでない場合のカードスタイル (Fallback for general card) */
+        section:not(#spots) .card {
+            margin-left: 16px;
+            margin-right: 16px;
+        }
+
+
         /* ======== 持ち物リスト (モダン化) ======== */
         .checklist-list {
             list-style: none;
@@ -168,18 +217,43 @@
             align-items: center;
         }
         .checklist-list input[type="checkbox"] {
-            width: 1.3em;
-            height: 1.3em;
+            appearance: none; /* デフォルトのスタイルをリセット */
+            width: 1.4em;
+            height: 1.4em;
+            border: 2px solid var(--color-border);
+            border-radius: 4px;
             margin-right: 12px;
             cursor: pointer;
-            accent-color: var(--color-primary-medium); 
-            flex-shrink: 0; /* チェックボックスが縮まないように */
+            background-color: var(--color-background-card);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease-in-out;
         }
+        .checklist-list input[type="checkbox"]:checked {
+            background-color: var(--color-primary-medium);
+            border-color: var(--color-primary-medium);
+        }
+        .checklist-list input[type="checkbox"]:checked::before {
+            content: '';
+            width: 0.6em;
+            height: 1em;
+            border: solid var(--color-background-card);
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+            opacity: 1;
+        }
+        .checklist-list input[type="checkbox"]:focus {
+            outline: 2px solid var(--color-outline-focus);
+            outline-offset: 2px;
+        }
+
         .checklist-list label {
             flex: 1;
             cursor: pointer;
             color: var(--color-text-primary);
-            line-height: 1.5; /* テキストが複数行になっても対応 */
+            line-height: 1.5;
         }
         .checklist-list input[type="checkbox"]:checked + label {
             text-decoration: line-through;
@@ -191,7 +265,7 @@
             position: relative;
             overflow: hidden;
             width: 100%;
-            padding-top: 75%; /* 4:3比率に変更 (100%だと縦長すぎたため) */
+            padding-top: 75%; /* 4:3比率に変更 */
             border-radius: 8px; /* カードの角丸に合わせる */
             box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px rgba(9, 30, 66, 0.31);
         }
@@ -211,24 +285,24 @@
         }
 
 
-        /* ======== フッターナビゲーション (モダン化) ======== */
+        /* ======== フッターナビゲーション (モダン化 & SVGアイコン化) ======== */
         footer {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background-color: var(--color-background-card);
-            /* 上部だけの繊細な影 */
             box-shadow: 0 -1px 1px rgba(9, 30, 66, 0.08); 
             display: flex; 
             justify-content: space-around; 
-            padding: 8px 0; /* パディング調整 */
+            padding: 8px 0; 
             border-top: 1px solid var(--color-border);
+            z-index: 100; /* 他のコンテンツの上に表示 */
         }
         .nav-button {
             background: none;
             border: none;
-            font-size: 0.75rem; /* テキストを少し小さく */
+            font-size: 0.75rem; 
             color: var(--color-text-secondary);
             cursor: pointer;
             padding: 5px;
@@ -237,22 +311,26 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px; /* アイコンとテキストの間隔 */
+            gap: 4px; 
+            transition: color 0.2s ease-in-out;
+            outline-offset: 2px; /* フォーカスリング */
+        }
+        .nav-button:focus {
+             outline: 2px solid var(--color-outline-focus);
+             border-radius: 4px;
         }
         .nav-button.active {
             color: var(--color-primary-medium); 
-            font-weight: 600; /* アクティブ時は太字に */
+            font-weight: 600; 
         }
         
-        /* SVGアイコン用のスタイル (推奨) */
-        .nav-button i {
+        /* Feather Iconsのスタイル */
+        .nav-button svg {
             width: 22px;
             height: 22px;
-        }
-        /* 絵文字を使う場合のフォールバック */
-        .nav-button div {
-            font-size: 1.25rem; 
-            line-height: 1;
+            stroke-width: 2; /* アイコンの線の太さ */
+            stroke: currentColor; /* 親要素のcolorを継承 */
+            fill: none;
         }
 
     </style>
@@ -406,103 +484,103 @@
         </section>
 
         <section id="spots">
+            <h3>おすすめスポット</h3> <div class="spots-carousel">
+                <div class="card">
+                    <img src="img/image1.jpg" alt="古い町並み">
+                    <div class="card-content">
+                        <h3>古い町並み (さんまち通り)</h3>
+                        <p>高山観光の中心。江戸時代の商家町の面影が残り、食べ歩きや地酒の試飲が楽しめます。</p>
+                    </div>
+                </div>
 
-            <div class="card">
-                <img src="img/image1.jpg" alt="古い町並み">
-                <div class="card-content">
-                    <h3>古い町並み (さんまち通り)</h3>
-                    <p>高山観光の中心。江戸時代の商家町の面影が残り、食べ歩きや地酒の試飲が楽しめます。</p>
+                <div class="card">
+                    <img src="img/image2.jpg" alt="飛騨大鍾乳洞">
+                    <div class="card-content">
+                        <h3>飛騨大鍾乳洞</h3>
+                        <p>日本有数の観光鍾乳洞。夏でも涼しく、ライトアップされた幻想的な空間が広がります。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="img/image3.jpg" alt="白川郷">
+                    <div class="card-content">
+                        <h3>白川郷 (世界遺産)</h3>
+                        <p>高山からバスで約50分。独特の合掌造り集落が広がる、日本の原風景とも言える世界遺産です。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="img/image4.jpg" alt="高山陣屋">
+                    <div class="card-content">
+                        <h3>高山陣屋</h3>
+                        <p>日本で唯一現存する代官所・郡代役所。江戸時代の役所の様子を垣間見ることができます。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="img/image5.jpg" alt="宮川朝市">
+                    <div class="card-content">
+                        <h3>宮川朝市・陣屋前朝市</h3>
+                        <p>毎朝開催される朝市。新鮮な野菜や果物、民芸品（さるぼぼなど）が並びます。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="img/image6.jpg" alt="飛騨の里">
+                    <div class="card-content">
+                        <h3>飛騨の里 (ひだのさと)</h3>
+                        <p>合掌造りなど飛騨の古い民家を移築・復元した野外博物館。手軽に昔の暮らしを体験できます。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="img/image7.jpg" alt="高山祭屋台会館">
+                    <div class="card-content">
+                        <h3>高山祭屋台会館</h3>
+                        <p>豪華絢爛な「高山祭」で使われる屋台（山車）を常時展示。その精巧な装飾は圧巻です。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="img/image8.jpg" alt="中橋">
+                    <div class="card-content">
+                        <h3>中橋 (なかばし)</h3>
+                        <p>高山のシンボル的な赤い橋。宮川と古い町並みを背景にした絶好の写真スポットです。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="img/image9.jpg" alt="飛騨国分寺">
+                    <div class="card-content">
+                        <h3>飛騨国分寺</h3>
+                        <p>樹齢1200年を超える大イチョウと、美しい三重塔が目印の、高山市内最古の寺院です。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="img/image10.jpg" alt="新穂高ロープウェイ">
+                    <div class="card-content">
+                        <h3>新穂高ロープウェイ</h3>
+                        <p>2階建てゴンドラが特徴。標高2,156mの山頂展望台から北アルプスの大パノラマを楽しめます。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="img/image11.jpg" alt="奥飛騨温泉郷">
+                    <div class="card-content">
+                        <h3>奥飛騨温泉郷</h3>
+                        <p>平湯温泉や福地温泉など、5つの温泉地の総称。大自然の中の露天風呂が魅力です。</p>
+                    </div>
                 </div>
             </div>
-
-            <div class="card">
-                <img src="img/image2.jpg" alt="飛騨大鍾乳洞">
-                <div class="card-content">
-                    <h3>飛騨大鍾乳洞</h3>
-                    <p>日本有数の観光鍾乳洞。夏でも涼しく、ライトアップされた幻想的な空間が広がります。</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="img/image3.jpg" alt="白川郷">
-                <div class="card-content">
-                    <h3>白川郷 (世界遺産)</h3>
-                    <p>高山からバスで約50分。独特の合掌造り集落が広がる、日本の原風景とも言える世界遺産です。</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="img/image4.jpg" alt="高山陣屋">
-                <div class="card-content">
-                    <h3>高山陣屋</h3>
-                    <p>日本で唯一現存する代官所・郡代役所。江戸時代の役所の様子を垣間見ることができます。</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="img/image5.jpg" alt="宮川朝市">
-                <div class="card-content">
-                    <h3>宮川朝市・陣屋前朝市</h3>
-                    <p>毎朝開催される朝市。新鮮な野菜や果物、民芸品（さるぼぼなど）が並びます。</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="img/image6.jpg" alt="飛騨の里">
-                <div class="card-content">
-                    <h3>飛騨の里 (ひだのさと)</h3>
-                    <p>合掌造りなど飛騨の古い民家を移築・復元した野外博物館。手軽に昔の暮らしを体験できます。</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="img/image7.jpg" alt="高山祭屋台会館">
-                <div class="card-content">
-                    <h3>高山祭屋台会館</h3>
-                    <p>豪華絢爛な「高山祭」で使われる屋台（山車）を常時展示。その精巧な装飾は圧巻です。</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="img/image8.jpg" alt="中橋">
-                <div class="card-content">
-                    <h3>中橋 (なかばし)</h3>
-                    <p>高山のシンボル的な赤い橋。宮川と古い町並みを背景にした絶好の写真スポットです。</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="img/image9.jpg" alt="飛騨国分寺">
-                <div class="card-content">
-                    <h3>飛騨国分寺</h3>
-                    <p>樹齢1200年を超える大イチョウと、美しい三重塔が目印の、高山市内最古の寺院です。</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="img/image10.jpg" alt="新穂高ロープウェイ">
-                <div class="card-content">
-                    <h3>新穂高ロープウェイ</h3>
-                    <p>2階建てゴンドラが特徴。標高2,156mの山頂展望台から北アルプスの大パノラマを楽しめます。</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="img/image11.jpg" alt="奥飛騨温泉郷">
-                <div class="card-content">
-                    <h3>奥飛騨温泉郷</h3>
-                    <p>平湯温泉や福地温泉など、5つの温泉地の総称。大自然の中の露天風呂が魅力です。</p>
-                </div>
-            </div>
-
         </section>
 
         <section id="map">
             
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1Xti9gB5wtnd6Hvmy6qIfcYv78JE8zQk&ehbc=2E312F" width="640" height="480"></iframe>
-            </div>
-            <p>ピンをタップして場所を確認できます</p>
+            <div class="card"> <div class="card-content" style="padding-bottom: 0;"> <h3>周辺マップ</h3> </div>
+                <div class="map-container" style="margin: 0 20px 20px;"> <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1Xti9gB5wtnd6Hvmy6qIfcYv78JE8zQk&ehbc=2E312F" width="640" height="480"></iframe>
+                </div>
+                <p style="margin-top: -10px; padding-bottom: 20px;">ピンをタップして場所を確認できます</p> </div>
 
         </section>
 
@@ -530,26 +608,22 @@
 
     <footer>
         <button class="nav-button active" data-target="schedule">
-            <div>✈️</div>
-            <div>Schedule</div>
+            <i data-feather="calendar"></i> <span>Schedule</span>
         </button>
         <button class="nav-button" data-target="spots">
-            <div>🗺️</div>
-            <div>Spots</div>
+            <i data-feather="map"></i> <span>Spots</span>
         </button>
         <button class="nav-button" data-target="map">
-            <div>📍</div>
-            <div>Map</div>
+            <i data-feather="compass"></i> <span>Map</span>
         </button>
         <button class="nav-button" data-target="checklist">
-            <div>🎒</div>
-            <div>Checklist</div>
+            <i data-feather="list"></i> <span>Checklist</span>
         </button>
     </footer>
 
     <script>
-        /* フッターのアイコンを有効化 (推奨) */
-        // feather.replace(); 
+        // Feather Iconsを置き換える
+        feather.replace(); 
 
         document.addEventListener('DOMContentLoaded', () => {
             
