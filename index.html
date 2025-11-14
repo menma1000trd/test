@@ -8,8 +8,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;600&family=Yomogi&display=swap" rel="stylesheet">
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;600&family=Yomogi&family=Hachi+Maru+Pop&display=swap"
+        rel="stylesheet">
 
     <script src="https://unpkg.com/feather-icons"></script>
 
@@ -79,7 +80,7 @@
         /* メインコンテンツ領域（フッター分だけ下に余白） */
         main {
             padding-bottom: 80px;
-            padding-top: 84px; /* ★修正: 96px から 84px に変更 */
+            padding-top: 84px;
             /* 固定ヘッダー分の高さ */
         }
 
@@ -267,14 +268,14 @@
             line-height: 1.5;
         }
 
-        /* 【変更点】手書き風フォント (Hachi Maru Pop)  */
-        .handwriting {
-            font-family: "Hachi Maru Pop", cursive;  /* ダブルクォーテーションを使う */
-            font-size: 1rem;  
-            color: #444;     
-            line-height: 1.4; 
+        /* ★修正: .handwriting を p.handwriting に変更 */
+        p.handwriting {
+            font-family: 'Hachi Maru Pop', cursive;
+            font-size: 1rem;
+            color: #444;
+            /* 他のテキストより少し濃くして目立たせる */
+            line-height: 1.4;
         }
-
 
         /* ======== Spots セクション (横スクロール化) ======== */
         #spots {
