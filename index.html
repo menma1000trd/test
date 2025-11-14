@@ -41,19 +41,28 @@
         /* メインコンテンツ領域（フッター分だけ下に余白） */
         main {
             padding-bottom: 80px; 
-            padding-top: 20px; /* ヘッダーとの間に少し余白を追加 */
+            /* ヘッダーが固定されたため、その分だけ開始位置を下げる */
+            /* ヘッダーのpadding(20*2) + h1(24) + p(16+5) = 約85px */
+            padding-top: 105px; 
         }
 
-        /* ======== ヘッダー (維持しつつ調整) ======== */
+        /* ======== ヘッダー (固定化) ======== */
         header {
             background-color: var(--color-primary-light); 
             padding: 20px;
             text-align: center;
+            
+            /* 【変更点】ヘッダーを固定 */
+            position: sticky;
+            top: 0;
+            z-index: 100; /* 他の要素より手前に */
+            border-bottom: 1px solid var(--color-border);
+            box-shadow: 0 1px 1px rgba(9, 30, 66, 0.08);
         }
         header h1 {
             margin: 0;
-            font-size: 1.5rem; /* 少し大きく */
-            font-weight: 600;  /* 少し太く */
+            font-size: 1.5rem; 
+            font-weight: 600; 
             color: var(--color-primary-deep);
         }
         header p {
@@ -66,17 +75,20 @@
         /* ======== コンテンツのセクション ======== */
         section {
             display: none;
-            padding: 0 16px; /* 左右の余白を統一 */
         }
         section.active {
             display: block;
         }
+        /* セクション共通の左右余白コンテナ */
+        .container {
+            padding: 0 16px;
+        }
+
 
         /* ======== カード型レイアウト (モダン化) ======== */
         .card {
             background-color: var(--color-background-card);
-            border-radius: 8px; /* 少し角をシャープに */
-            /* Atlassian風の繊細な影 */
+            border-radius: 8px; 
             box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px rgba(9, 30, 66, 0.31);
             margin-bottom: 24px;
             overflow: hidden; 
@@ -85,7 +97,7 @@
             width: 100%;
             height: 180px;
             object-fit: cover; 
-            display: block; /* 画像下の余白を消す */
+            display: block; 
         }
         .card-content {
             padding: 20px;
@@ -101,6 +113,39 @@
             font-size: 0.95rem;
             line-height: 1.6;
             color: var(--color-text-secondary);
+        }
+
+        /* ======== Schedule セクション (Day 1/2 タブ化) ======== */
+        .day-tabs {
+            display: flex;
+            margin: 0 16px 16px;
+            border-radius: 8px;
+            background-color: var(--color-primary-light);
+            padding: 4px;
+        }
+        .day-tab-button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background-color: transparent;
+            color: var(--color-primary-deep);
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .day-tab-button.active {
+            background-color: var(--color-background-card);
+            color: var(--color-primary-medium);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .day-content {
+            display: none; /* JSで active をトグル */
+            padding: 0 16px; /* 左右余白 */
+        }
+        .day-content.active {
+            display: block;
         }
 
         /* ======== タイムライン風リスト (モダン化) ======== */
@@ -121,8 +166,8 @@
         .timeline-list li::before {
             content: '';
             position: absolute;
-            left: -9px; /* 線の中心に来るように調整 */
-            top: 5px;  /* 時間テキストの高さに合わせる */
+            left: -9px; 
+            top: 5px; 
             width: 14px;
             height: 14px;
             background-color: var(--color-primary-medium); 
@@ -131,10 +176,10 @@
             z-index: 1;
         }
         .timeline-time {
-            font-weight: 600; /* 少し太く */
+            font-weight: 600;
             font-size: 0.9rem;
             color: var(--color-text-primary);
-            margin-bottom: 4px; /* 時間と内容の間のマージン */
+            margin-bottom: 4px; 
         }
         .timeline-content h4 {
             margin: 0 0 5px 0;
@@ -159,51 +204,41 @@
 
         /* ======== Spots セクション (横スクロール化) ======== */
         #spots {
-            padding: 0; /* 横スクロールのための余白調整 */
+            padding: 0; /* セクション自体の余白は0に */
+        }
+        
+        /* 【修正点】h3の余白を復活 */
+        #spots h3 {
+            padding: 0 16px; /* 左右の余白を復活 */
+            margin-bottom: 16px;
+            margin-top: 0; /* h3のデフォルトマージンをリセット */
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-primary-deep);
         }
 
         .spots-carousel {
-            display: flex; /* 横並びに */
-            overflow-x: scroll; /* 横スクロールを可能に */
-            -webkit-overflow-scrolling: touch; /* iOSでのスクロールをスムーズに */
-            scroll-snap-type: x mandatory; /* スクロールをカードごとにスナップ */
-            padding: 0 16px 10px; /* 左右の余白と下部のシャドウのための余白 */
-            margin-bottom: 16px; /* スクロール領域の下に余白 */
+            display: flex;
+            overflow-x: scroll;
+            -webkit-overflow-scrolling: touch; 
+            scroll-snap-type: x mandatory; 
+            padding: 0 16px 10px; /* カルーセル自体の左右余白 */
+            margin-bottom: 16px; 
         }
 
-        .spots-carousel::-webkit-scrollbar {
-            display: none; /* スクロールバーを非表示 (任意) */
-        }
-        .spots-carousel {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
+        .spots-carousel::-webkit-scrollbar { display: none; }
+        .spots-carousel { -ms-overflow-style: none; scrollbar-width: none; }
 
         .spots-carousel .card {
-            flex: 0 0 85%; /* カードの幅を親の85%に設定 (約1.5枚見せる) */
-            margin-right: 16px; /* カード間の余白 */
-            scroll-snap-align: start; /* カードの先頭でスナップ */
-            max-width: 300px; /* カードの最大幅を設定 */
+            flex: 0 0 85%; 
+            margin-right: 16px; 
+            scroll-snap-align: start; 
+            max-width: 300px; 
         }
 
-        /* 横スクロールカード内の画像調整 */
-        .spots-carousel .card img {
-            height: 150px; /* 高さを少し低く */
-        }
-        .spots-carousel .card .card-content h3 {
-            font-size: 1.1rem; /* スポット名を少し小さく */
-            margin-bottom: 8px;
-        }
-        .spots-carousel .card .card-content p {
-            font-size: 0.85rem; /* 説明文を少し小さく */
-        }
-
-        /* 横スクロールでない場合のカードスタイル (Fallback for general card) */
-        section:not(#spots) .card {
-            margin-left: 16px;
-            margin-right: 16px;
-        }
-
+        .spots-carousel .card img { height: 150px; }
+        .spots-carousel .card .card-content h3 { font-size: 1.1rem; margin-bottom: 8px; }
+        .spots-carousel .card .card-content p { font-size: 0.85rem; }
 
         /* ======== 持ち物リスト (モダン化) ======== */
         .checklist-list {
@@ -212,12 +247,12 @@
         }
         .checklist-list li {
             font-size: 1rem;
-            margin-bottom: 16px; /* 余白を広げる */
+            margin-bottom: 16px; 
             display: flex;
             align-items: center;
         }
         .checklist-list input[type="checkbox"] {
-            appearance: none; /* デフォルトのスタイルをリセット */
+            appearance: none; 
             width: 1.4em;
             height: 1.4em;
             border: 2px solid var(--color-border);
@@ -242,7 +277,6 @@
             border: solid var(--color-background-card);
             border-width: 0 3px 3px 0;
             transform: rotate(45deg);
-            opacity: 1;
         }
         .checklist-list input[type="checkbox"]:focus {
             outline: 2px solid var(--color-outline-focus);
@@ -265,8 +299,8 @@
             position: relative;
             overflow: hidden;
             width: 100%;
-            padding-top: 75%; /* 4:3比率に変更 */
-            border-radius: 8px; /* カードの角丸に合わせる */
+            padding-top: 75%; 
+            border-radius: 8px;
             box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px rgba(9, 30, 66, 0.31);
         }
         .map-container iframe {
@@ -284,7 +318,6 @@
             margin-top: 15px;
         }
 
-
         /* ======== フッターナビゲーション (モダン化 & SVGアイコン化) ======== */
         footer {
             position: fixed;
@@ -297,7 +330,7 @@
             justify-content: space-around; 
             padding: 8px 0; 
             border-top: 1px solid var(--color-border);
-            z-index: 100; /* 他のコンテンツの上に表示 */
+            z-index: 100;
         }
         .nav-button {
             background: none;
@@ -313,7 +346,7 @@
             align-items: center;
             gap: 4px; 
             transition: color 0.2s ease-in-out;
-            outline-offset: 2px; /* フォーカスリング */
+            outline-offset: 2px; 
         }
         .nav-button:focus {
              outline: 2px solid var(--color-outline-focus);
@@ -324,12 +357,11 @@
             font-weight: 600; 
         }
         
-        /* Feather Iconsのスタイル */
         .nav-button svg {
             width: 22px;
             height: 22px;
-            stroke-width: 2; /* アイコンの線の太さ */
-            stroke: currentColor; /* 親要素のcolorを継承 */
+            stroke-width: 2; 
+            stroke: currentColor; 
             fill: none;
         }
 
@@ -346,145 +378,153 @@
         
         <section id="schedule" class="active">
             
-            <div class="card">
-                <div class="card-content">
-                    <h3>DAY 1</h3>
-                    <ul class="timeline-list">
-                        <li>
-                            <div class="timeline-time">06:51</div>
-                            <div class="timeline-content">
-                                <h4>東京発</h4>
-                                <p class="handwriting">早起きごめん</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">08:28</div>
-                            <div class="timeline-content">
-                                <h4>名古屋着</h4>
-                                <p class="handwriting">なごや</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">08:43</div>
-                            <div class="timeline-content">
-                                <h4>名古屋発</h4>
-                                <p class="handwriting">特急に乗ります</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">10:58</div>
-                            <div class="timeline-content">
-                                <h4>高山着</h4>
-                                <p class="handwriting">長旅おつかれ</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">12:00</div>
-                            <div class="timeline-content">
-                                <h4>昼飯</h4>
-                                <p class="handwriting">どうしよう</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">13:00</div>
-                            <div class="timeline-content">
-                                <h4>どうしよう</h4>
-                                <p class="handwriting">どうしよう</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">19:00</div>
-                            <div class="timeline-content">
-                                <h4>夜ごはん</h4>
-                                <p class="handwriting">フレンチだよーん</p>
-                            </div>
-                        </li>
-                    </ul>
+            <div class="day-tabs">
+                <button class="day-tab-button active" data-target="day1-content">DAY 1</button>
+                <button class="day-tab-button" data-target="day2-content">DAY 2</button>
+            </div>
+
+            <div id="day1-content" class="day-content active">
+                <div class="card">
+                    <div class="card-content">
+                        <ul class="timeline-list">
+                            <li>
+                                <div class="timeline-time">06:51</div>
+                                <div class="timeline-content">
+                                    <h4>東京発</h4>
+                                    <p class="handwriting">早起きごめん</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">08:28</div>
+                                <div class="timeline-content">
+                                    <h4>名古屋着</h4>
+                                    <p class="handwriting">なごや</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">08:43</div>
+                                <div class="timeline-content">
+                                    <h4>名古屋発</h4>
+                                    <p class="handwriting">特急に乗ります</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">10:58</div>
+                                <div class="timeline-content">
+                                    <h4>高山着</h4>
+                                    <p class="handwriting">長旅おつかれ</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">12:00</div>
+                                <div class="timeline-content">
+                                    <h4>昼飯</h4>
+                                    <p class="handwriting">どうしよう</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">13:00</div>
+                                <div class="timeline-content">
+                                    <h4>どうしよう</h4>
+                                    <p class="handwriting">どうしよう</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">19:00</div>
+                                <div class="timeline-content">
+                                    <h4>夜ごはん</h4>
+                                    <p class="handwriting">フレンチだよーん</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-content">
-                    <h3>DAY 2</h3>
-                    <ul class="timeline-list">
-                        <li>
-                            <div class="timeline-time">08:00</div>
-                            <div class="timeline-content">
-                                <h4>朝食</h4>
-                                <p class="handwriting">バイキングもりもり</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">09:30</div>
-                            <div class="timeline-content">
-                                <h4>チェックアウト</h4>
-                                <p class="handwriting">向かうぜ</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">10:00</div>
-                            <div class="timeline-content">
-                                <h4>鍾乳洞</h4>
-                                <p class="handwriting">見たことない楽しみ</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">12:00</div>
-                            <div class="timeline-content">
-                                <h4>昼飯</h4>
-                                <p class="handwriting">白川郷で食べてもいい</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">13:00</div>
-                            <div class="timeline-content">
-                                <h4>白川郷</h4>
-                                <p class="handwriting">世界遺産だぜ</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">16:00</div>
-                            <div class="timeline-content">
-                                <h4>高山駅</h4>
-                                <p class="handwriting">終わっちゃうよお(>_<)</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">17:18</div>
-                            <div class="timeline-content">
-                                <h4>高山発</h4>
-                                <p class="handwriting">帰ります</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">18:54</div>
-                            <div class="timeline-content">
-                                <h4>富山着</h4>
-                                <p class="handwriting">帰りは富山経由</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">19:08</div>
-                            <div class="timeline-content">
-                                <h4>富山発</h4>
-                                <p class="handwriting">富山で飯食って後ろの自由席にしてもいい</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-time">21:20</div>
-                            <div class="timeline-content">
-                                <h4>東京着</h4>
-                                <p class="handwriting">fin</p>
-                            </div>
-                        </li>
-                    </ul>
+            <div id="day2-content" class="day-content">
+                <div class="card">
+                    <div class="card-content">
+                        <ul class="timeline-list">
+                            <li>
+                                <div class="timeline-time">08:00</div>
+                                <div class="timeline-content">
+                                    <h4>朝食</h4>
+                                    <p class="handwriting">バイキングもりもり</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">09:30</div>
+                                <div class="timeline-content">
+                                    <h4>チェックアウト</h4>
+                                    <p class="handwriting">向かうぜ</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">10:00</div>
+                                <div class="timeline-content">
+                                    <h4>鍾乳洞</h4>
+                                    <p class="handwriting">見たことない楽しみ</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">12:00</div>
+                                <div class="timeline-content">
+                                    <h4>昼飯</h4>
+                                    <p class="handwriting">白川郷で食べてもいい</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">13:00</div>
+                                <div class="timeline-content">
+                                    <h4>白川郷</h4>
+                                    <p class="handwriting">世界遺産だぜ</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">16:00</div>
+                                <div class="timeline-content">
+                                    <h4>高山駅</h4>
+                                    <p class="handwriting">終わっちゃうよお(>_<)</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">17:18</div>
+                                <div class="timeline-content">
+                                    <h4>高山発</h4>
+                                    <p class="handwriting">帰ります</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">18:54</div>
+                                <div class="timeline-content">
+                                    <h4>富山着</h4>
+                                    <p class="handwriting">帰りは富山経由</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">19:08</div>
+                                <div class="timeline-content">
+                                    <h4>富山発</h4>
+                                    <p class="handwriting">富山で飯食って後ろの自由席にしてもいい</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-time">21:20</div>
+                                <div class="timeline-content">
+                                    <h4>東京着</h4>
+                                    <p class="handwriting">fin</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
         </section>
 
         <section id="spots">
-            <h3>おすすめスポット</h3> <div class="spots-carousel">
+            <h3>おすすめスポット</h3> 
+            <div class="spots-carousel">
                 <div class="card">
                     <img src="img/image1.jpg" alt="古い町並み">
                     <div class="card-content">
@@ -576,30 +616,37 @@
         </section>
 
         <section id="map">
-            
-            <div class="card"> <div class="card-content" style="padding-bottom: 0;"> <h3>周辺マップ</h3> </div>
-                <div class="map-container" style="margin: 0 20px 20px;"> <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1Xti9gB5wtnd6Hvmy6qIfcYv78JE8zQk&ehbc=2E312F" width="640" height="480"></iframe>
+            <div class="container"> <div class="card"> 
+                    <div class="card-content" style="padding-bottom: 0;"> 
+                        <h3>周辺マップ</h3> 
+                    </div>
+                    <div class="map-container" style="margin: 0 20px 20px;"> 
+                        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1Xti9gB5wtnd6Hvmy6qIfcYv78JE8zQk&ehbc=2E312F" width="640" height="480"></iframe>
+                    </div>
+                    <p style="text-align: center; margin-top: -10px; padding-bottom: 20px; font-size: 0.9rem; color: var(--color-text-secondary);">
+                        ピンをタップして場所を確認できます
+                    </p> 
                 </div>
-                <p style="margin-top: -10px; padding-bottom: 20px;">ピンをタップして場所を確認できます</p> </div>
-
+            </div>
         </section>
 
         <section id="checklist">
-            <div class="card">
-                <div class="card-content">
-                    <h3>持ち物リスト</h3>
-                    <ul class="checklist-list">
-                        <li><input type="checkbox" id="item1"><label for="item1">おめでとうの気持ち</label></li>
-                        <li><input type="checkbox" id="item2"><label for="item2">モバイルバッテリー</label></li>
-                        <li><input type="checkbox" id="item3"><label for="item3">着替え</label></li>
-                        <li><input type="checkbox" id="item4"><label for="item4">パンツ</label></li>
-                        <li><input type="checkbox" id="item5"><label for="item5">免許証</label></li>
-                        <li><input type="checkbox" id="item6"><label for="item6">特急券（わすれそう）</label></li>
-                        <li><input type="checkbox" id="item7"><label for="item7">コンタクト</label></li>
-                        <li><input type="checkbox" id="item8"><label for="item8">スキンケア類（顔をゴシゴシしないこと）</label></li>
-                        <li><input type="checkbox" id="item9"><label for="item9">モバイルバッテリー</label></li>
-                        <li><input type="checkbox" id="item10"><label for="item10">ぷにぷにのおなか</label></li>
-                    </ul>
+            <div class="container"> <div class="card">
+                    <div class="card-content">
+                        <h3>持ち物リスト</h3>
+                        <ul class="checklist-list">
+                            <li><input type="checkbox" id="item1"><label for="item1">おめでとうの気持ち</label></li>
+                            <li><input type="checkbox" id="item2"><label for="item2">モバイルバッテリー</label></li>
+                            <li><input type="checkbox" id="item3"><label for="item3">着替え</label></li>
+                            <li><input type="checkbox" id="item4"><label for="item4">パンツ</label></li>
+                            <li><input type="checkbox" id="item5"><label for="item5">免許証</label></li>
+                            <li><input type="checkbox" id="item6"><label for="item6">特急券（わすれそう）</label></li>
+                            <li><input type="checkbox" id="item7"><label for="item7">コンタクト</label></li>
+                            <li><input type="checkbox" id="item8"><label for="item8">スキンケア類（顔をゴシゴシしないこと）</label></li>
+                            <li><input type="checkbox" id="item9"><label for="item9">モバイルバッテリー</label></li>
+                            <li><input type="checkbox" id="item10"><label for="item10">ぷにぷにのおなか</label></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
@@ -608,16 +655,20 @@
 
     <footer>
         <button class="nav-button active" data-target="schedule">
-            <i data-feather="calendar"></i> <span>Schedule</span>
+            <i data-feather="calendar"></i> 
+            <span>Schedule</span>
         </button>
         <button class="nav-button" data-target="spots">
-            <i data-feather="map"></i> <span>Spots</span>
+            <i data-feather="map"></i> 
+            <span>Spots</span>
         </button>
         <button class="nav-button" data-target="map">
-            <i data-feather="compass"></i> <span>Map</span>
+            <i data-feather="compass"></i> 
+            <span>Map</span>
         </button>
         <button class="nav-button" data-target="checklist">
-            <i data-feather="list"></i> <span>Checklist</span>
+            <i data-feather="list"></i> 
+            <span>Checklist</span>
         </button>
     </footer>
 
@@ -627,23 +678,35 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             
+            // === メインのフッターナビゲーション ===
             const navButtons = document.querySelectorAll('.nav-button');
-            const sections = document.querySelectorAll('main section');
+            const sections = document.querySelectorAll('main > section');
+
+            // === Day 1/2 のタブナビゲーション ===
+            const dayTabButtons = document.querySelectorAll('.day-tab-button');
+            const dayContents = document.querySelectorAll('.day-content');
 
             // 最初に表示するセクション（Schedule）
             const initialSection = document.getElementById('schedule');
             if(initialSection) {
                 initialSection.classList.add('active');
             }
+            // 最初に表示するDayタブ (Day 1)
+            const initialDayContent = document.getElementById('day1-content');
+            if(initialDayContent) {
+                initialDayContent.classList.add('active');
+            }
 
+
+            // メインナビのクリックイベント
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
-
+                    // メインナビのボタンのアクティブ切り替え
                     navButtons.forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
 
+                    // メインセクションの表示切り替え
                     const targetId = button.dataset.target; 
-
                     sections.forEach(section => {
                         if (section.id === targetId) {
                             section.classList.add('active');
@@ -654,6 +717,25 @@
 
                     // タブ切り替え時にページのトップにスクロール
                     window.scrollTo(0, 0);
+                });
+            });
+
+            // Day 1/2 タブのクリックイベント
+            dayTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Dayタブボタンのアクティブ切り替え
+                    dayTabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    // Dayコンテンツの表示切り替え
+                    const targetId = button.dataset.target;
+                    dayContents.forEach(content => {
+                        if (content.id === targetId) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
                 });
             });
         });
