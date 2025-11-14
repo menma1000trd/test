@@ -8,75 +8,101 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/feather-icons"></script> 
 
     <style>
-        /* ======== 全体の基本設定 ======== */
+        /* ======== 全体の基本設定 (モダン化) ======== */
+        :root {
+            /* メインカラー (維持) */
+            --color-primary-deep: #004D40;
+            --color-primary-medium: #00796B;
+            --color-primary-light: #E6F2F2;
+
+            /* モダンデザイン用のベースカラー */
+            --color-text-primary: #172B4D; /* Atlassian風テキストカラー */
+            --color-text-secondary: #5E6C84;
+            --color-background-body: #FAFBFC; /* 非常に薄いグレー背景 */
+            --color-background-card: #FFFFFF;
+            --color-border: #DFE1E6;
+        }
+
         body {
+            /* モダンなシステムフォントスタックを優先 */
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4; /* 背景色 */
-            color: #333;
+            background-color: var(--color-background-body);
+            color: var(--color-text-primary);
+            -webkit-font-smoothing: antialiased; /* フォントを滑らかに */
         }
 
         /* メインコンテンツ領域（フッター分だけ下に余白） */
         main {
             padding-bottom: 80px; 
+            padding-top: 20px; /* ヘッダーとの間に少し余白を追加 */
         }
 
-        /* ======== ヘッダー ======== */
+        /* ======== ヘッダー (維持しつつ調整) ======== */
         header {
-            background-color: #E6F2F2; /* 画像のミントグリーン風 */
-            padding: 20px 15px;
+            background-color: var(--color-primary-light); 
+            padding: 20px;
             text-align: center;
         }
         header h1 {
             margin: 0;
-            font-size: 1.4rem;
-            color: #004D40; /* 濃い緑 */
+            font-size: 1.5rem; /* 少し大きく */
+            font-weight: 600;  /* 少し太く */
+            color: var(--color-primary-deep);
         }
         header p {
             margin: 5px 0 0;
-            color: #004D40;
-            font-size: 0.9rem;
+            color: var(--color-primary-deep);
+            font-size: 1rem;
+            font-weight: 500;
         }
 
         /* ======== コンテンツのセクション ======== */
         section {
-            display: none; /* JavaScriptで切り替えるため、最初は非表示 */
-            padding: 15px;
+            display: none;
+            padding: 0 16px; /* 左右の余白を統一 */
         }
         section.active {
             display: block;
         }
 
-        /* ======== カード型レイアウト (共通) ======== */
+        /* ======== カード型レイアウト (モダン化) ======== */
         .card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
+            background-color: var(--color-background-card);
+            border-radius: 8px; /* 少し角をシャープに */
+            /* Atlassian風の繊細な影 */
+            box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px rgba(9, 30, 66, 0.31);
+            margin-bottom: 24px;
             overflow: hidden; 
         }
         .card img {
             width: 100%;
             height: 180px;
             object-fit: cover; 
+            display: block; /* 画像下の余白を消す */
         }
         .card-content {
-            padding: 15px;
+            padding: 20px;
         }
         .card-content h3 {
             margin-top: 0;
-            margin-bottom: 10px;
-            color: #004D40;
+            margin-bottom: 16px;
+            color: var(--color-primary-deep);
+            font-size: 1.25rem;
+            font-weight: 600;
         }
         .card-content p, .card-content ul {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             line-height: 1.6;
+            color: var(--color-text-secondary);
         }
 
-        /* ======== タイムライン風リスト ======== */
+        /* ======== タイムライン風リスト (モダン化) ======== */
         .timeline-list {
             list-style: none;
             padding-left: 10px;
@@ -84,8 +110,8 @@
         }
         .timeline-list li {
             position: relative;
-            padding: 5px 0 20px 35px; 
-            border-left: 2px solid #E6F2F2; 
+            padding: 0px 0 24px 35px; /* パディング調整 */
+            border-left: 2px solid var(--color-primary-light); 
         }
         .timeline-list li:last-child {
             border-left: 2px solid transparent;
@@ -94,33 +120,35 @@
         .timeline-list li::before {
             content: '';
             position: absolute;
-            left: -8px; 
-            top: 10px;
-            width: 12px;
-            height: 12px;
-            background-color: #00796B; 
+            left: -9px; /* 線の中心に来るように調整 */
+            top: 5px;  /* 時間テキストの高さに合わせる */
+            width: 14px;
+            height: 14px;
+            background-color: var(--color-primary-medium); 
             border-radius: 50%;
-            border: 2px solid white;
+            border: 3px solid var(--color-background-card); /* 背景色で縁取り */
             z-index: 1;
         }
         .timeline-time {
-            font-weight: bold;
+            font-weight: 600; /* 少し太く */
             font-size: 0.9rem;
-            color: #333;
+            color: var(--color-text-primary);
+            margin-bottom: 4px; /* 時間と内容の間のマージン */
         }
         .timeline-content h4 {
-            margin: 5px 0;
+            margin: 0 0 5px 0;
             font-size: 1.1rem;
-            color: #004D40;
+            font-weight: 600;
+            color: var(--color-primary-deep);
         }
         .timeline-content p {
             margin: 0;
             font-size: 0.9rem;
-            color: #555;
+            color: var(--color-text-secondary);
             line-height: 1.5;
         }
         
-        /* 手書き風フォント用のクラス */
+        /* 手書き風フォント (Yomogi) (維持) */
         .handwriting {
             font-family: 'Yomogi', cursive; 
             font-size: 1rem;  
@@ -128,41 +156,44 @@
             line-height: 1.4; 
         }
 
-        /* ======== 持ち物リスト ======== */
+        /* ======== 持ち物リスト (モダン化) ======== */
         .checklist-list {
             list-style: none;
             padding-left: 0;
         }
         .checklist-list li {
             font-size: 1rem;
-            margin-bottom: 12px;
+            margin-bottom: 16px; /* 余白を広げる */
             display: flex;
             align-items: center;
         }
         .checklist-list input[type="checkbox"] {
-            width: 1.2em;
-            height: 1.2em;
-            margin-right: 10px;
+            width: 1.3em;
+            height: 1.3em;
+            margin-right: 12px;
             cursor: pointer;
-            accent-color: #00796B; 
+            accent-color: var(--color-primary-medium); 
+            flex-shrink: 0; /* チェックボックスが縮まないように */
         }
         .checklist-list label {
             flex: 1;
             cursor: pointer;
+            color: var(--color-text-primary);
+            line-height: 1.5; /* テキストが複数行になっても対応 */
         }
         .checklist-list input[type="checkbox"]:checked + label {
             text-decoration: line-through;
-            color: #888;
+            color: var(--color-text-secondary);
         }
 
-        /* マップ用コンテナのスタイル */
+        /* マップ用コンテナ (モダン化) */
         .map-container {
             position: relative;
             overflow: hidden;
             width: 100%;
-            padding-top: 100%; /* 高さを幅と同じにする (1:1比率) */
-            border-radius: 12px; /* カードの角丸に合わせる */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* カードの影に合わせる */
+            padding-top: 75%; /* 4:3比率に変更 (100%だと縦長すぎたため) */
+            border-radius: 8px; /* カードの角丸に合わせる */
+            box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px rgba(9, 30, 66, 0.31);
         }
         .map-container iframe {
             position: absolute;
@@ -172,44 +203,56 @@
             height: 100%;
             border: 0;
         }
-        /* マップセクション用の説明テキスト */
         #map p {
             font-size: 0.9rem;
             text-align: center;
-            color: #555;
-            margin-top: 10px;
+            color: var(--color-text-secondary);
+            margin-top: 15px;
         }
 
 
-        /* ======== フッターナビゲーション ======== */
+        /* ======== フッターナビゲーション (モダン化) ======== */
         footer {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: #ffffff;
-            border-top: 1px solid #ddd;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+            background-color: var(--color-background-card);
+            /* 上部だけの繊細な影 */
+            box-shadow: 0 -1px 1px rgba(9, 30, 66, 0.08); 
             display: flex; 
             justify-content: space-around; 
-            padding: 10px 0;
+            padding: 8px 0; /* パディング調整 */
+            border-top: 1px solid var(--color-border);
         }
         .nav-button {
             background: none;
             border: none;
-            font-size: 0.8rem;
-            color: #888;
+            font-size: 0.75rem; /* テキストを少し小さく */
+            color: var(--color-text-secondary);
             cursor: pointer;
             padding: 5px;
             text-align: center; 
-            width: 25%; /* 4ボタン均等配置のため */
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px; /* アイコンとテキストの間隔 */
         }
         .nav-button.active {
-            color: #00796B; 
-            font-weight: bold;
+            color: var(--color-primary-medium); 
+            font-weight: 600; /* アクティブ時は太字に */
         }
+        
+        /* SVGアイコン用のスタイル (推奨) */
+        .nav-button i {
+            width: 22px;
+            height: 22px;
+        }
+        /* 絵文字を使う場合のフォールバック */
         .nav-button div {
-            font-size: 1.2rem; 
+            font-size: 1.25rem; 
+            line-height: 1;
         }
 
     </style>
@@ -325,7 +368,7 @@
                             <div class="timeline-time">16:00</div>
                             <div class="timeline-content">
                                 <h4>高山駅</h4>
-                                <p class="handwriting">終わっちゃうよお(&gt;_&lt;)</p>
+                                <p class="handwriting">終わっちゃうよお(>_<)</p>
                             </div>
                         </li>
                         <li>
@@ -476,7 +519,7 @@
                         <li><input type="checkbox" id="item6"><label for="item6">特急券（わすれそう）</label></li>
                         <li><input type="checkbox" id="item7"><label for="item7">コンタクト</label></li>
                         <li><input type="checkbox" id="item8"><label for="item8">スキンケア類（顔をゴシゴシしないこと）</label></li>
-                        <li><input type="checkbox" id="item9"><label for="item9">モバイルバッテリー</G></li>
+                        <li><input type="checkbox" id="item9"><label for="item9">モバイルバッテリー</label></li>
                         <li><input type="checkbox" id="item10"><label for="item10">ぷにぷにのおなか</label></li>
                     </ul>
                 </div>
@@ -505,10 +548,19 @@
     </footer>
 
     <script>
+        /* フッターのアイコンを有効化 (推奨) */
+        // feather.replace(); 
+
         document.addEventListener('DOMContentLoaded', () => {
             
             const navButtons = document.querySelectorAll('.nav-button');
             const sections = document.querySelectorAll('main section');
+
+            // 最初に表示するセクション（Schedule）
+            const initialSection = document.getElementById('schedule');
+            if(initialSection) {
+                initialSection.classList.add('active');
+            }
 
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -526,6 +578,8 @@
                         }
                     });
 
+                    // タブ切り替え時にページのトップにスクロール
+                    window.scrollTo(0, 0);
                 });
             });
         });
