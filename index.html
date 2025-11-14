@@ -80,13 +80,14 @@
         /* メインコンテンツ領域（フッター分だけ下に余白） */
         main {
             padding-bottom: 80px;
-            padding-top: 96px; /* ★修正: 105px から 96px に変更 */
+            padding-top: 84px; /* ★修正: 96px から 84px に変更 */
             /* 固定ヘッダー分の高さ */
         }
 
         /* ======== ヘッダー (固定化) ======== */
         header {
-            background-color: var(--color-primary-light);
+            /* ★修正: background-color を削除し、グラデーションに変更 */
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--color-primary-light) 100%);
             padding: 20px;
             text-align: center;
             position: sticky;
@@ -269,7 +270,7 @@
 
         /* 【変更点】手書き風フォント (Yomogi) (維持) */
         .handwriting {
-            font-family: 'Hachi Maru Pop', cursive; /* ★修正: 'Yomogi' から変更 */
+            font-family: 'Hachi Maru Pop', cursive;
             font-size: 1rem;
             color: #444;
             /* 他のテキストより少し濃くして目立たせる */
@@ -313,7 +314,7 @@
         .spots-carousel .card {
             flex: 0 0 85%;
             margin-right: 16px;
-            scroll-snap-align: center; /* ★修正: 'start' から変更 */
+            scroll-snap-align: center;
             max-width: 300px;
         }
 
@@ -396,7 +397,7 @@
         .map-container {
             position: relative;
             overflow: hidden;
-            width: auto; /* ★修正: 100% から変更 (インラインのmarginと競合するため) */
+            width: auto;
             padding-top: 75%;
             border-radius: 8px;
             box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px rgba(9, 30, 66, 0.31);
